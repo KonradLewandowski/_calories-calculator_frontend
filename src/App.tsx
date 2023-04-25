@@ -1,13 +1,18 @@
-import React from 'react';
+import { UserProvider } from "./contexts/user.context";
+import { ErrorProvider } from "./contexts/error.context";
 
-import LoginFormComponent from "./components/login-form/login-form.component";
-
-import './App.scss';
-
+import "./App.scss";
+import HomepageComponent from "./components/homepage/homepage.component";
 
 function App() {
   return (
-  <LoginFormComponent/>
+    <>
+      <ErrorProvider>
+        <UserProvider>
+          <HomepageComponent />
+        </UserProvider>
+      </ErrorProvider>
+    </>
   );
 }
 

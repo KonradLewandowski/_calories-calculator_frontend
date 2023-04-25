@@ -1,26 +1,42 @@
-import { useEffect } from "react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Form, Container, Row } from "react-bootstrap";
 import { fetchLoginUser } from "../../services/fetch-data.service";
-import styles from "./login-form.module.scss";
 import { ILoginUserCredentials } from "../../models/user.model";
+import UserContext from "../../contexts/user.context";
+import ErrorContext from "../../contexts/error.context";
+import ErrorModalComponent from "../error-modal/error-modal.component";
+import styles from "./login-form.module.scss";
 
-const LoginFormComponent = () => {
+const LogInFormComponent = () => {
+  const { modalShow, setModalShow, setErrorMessage, setErrorStatus } =
+    useContext(ErrorContext);
+  const { setUserData } = useContext(UserContext);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<ILoginUserCredentials>();
 
+  const handleClose = () => setModalShow(false);
   const onSubmit = async (input: ILoginUserCredentials) => {
     const userResponse = await fetchLoginUser(input);
 
-    console.log("userResponse", userResponse);
-    if (!userResponse) return console.error("error");
+    if (userResponse.hasOwnProperty("error")) {
+      setModalShow(true);
+      setErrorMessage(userResponse.error);
+      setErrorStatus(userResponse.status);
+      return;
+    }
+
+    setUserData(userResponse);
   };
 
   return (
     <Container fluid="sm">
+      <ErrorModalComponent show={modalShow} onHide={handleClose} />
+
       <Row
         className={`d-flex align-items-center justify-content-center ${styles.klRow}`}
       >
@@ -78,4 +94,4 @@ const LoginFormComponent = () => {
   );
 };
 
-export default LoginFormComponent;
+export default LogInFormComponent;
