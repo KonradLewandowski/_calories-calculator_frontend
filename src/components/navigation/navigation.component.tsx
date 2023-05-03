@@ -19,7 +19,6 @@ const NavigationComponent = () => {
     (async () => {
       try {
         const response = await fetchLoggedUser();
-        console.log("User useEffect: ", response);
 
         if (response?.hasOwnProperty("error") || null) {
           return;

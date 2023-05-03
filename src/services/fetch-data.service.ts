@@ -4,9 +4,9 @@ import {
   ISignupUserCredentials,
   IConfirmEmailToken,
 } from "../interfaces/user.interface";
-import env from "../utils/validate_env.util";
 
-const serverUrl = env.SERVER_URL;
+const serverUrl = process.env.REACT_APP_SERVER_URL;
+
 const fetchData = async (input: RequestInfo, init?: RequestInit) => {
   return await fetch(input, init);
 };
