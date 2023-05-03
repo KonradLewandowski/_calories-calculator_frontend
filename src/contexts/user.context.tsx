@@ -1,5 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { IUserModel } from "../models/user.model";
+import { fetchLoggedUser } from "../services/fetch-data.service";
 
 interface IValueProvider {
   userData: IUserModel | null;

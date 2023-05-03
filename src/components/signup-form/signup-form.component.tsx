@@ -1,15 +1,15 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Button, Form, Container, Row } from "react-bootstrap";
-import { fetchLoginUser } from "../../services/fetch-data.service";
-import { ILoginUserCredentials } from "../../interfaces/user.interface";
-import UserContext from "../../contexts/user.context";
+import { Link } from "react-router-dom";
+import { Button, Container, Form, Row } from "react-bootstrap";
 import ErrorContext from "../../contexts/error.context";
+import UserContext from "../../contexts/user.context";
+import { fetchSignupUser } from "../../services/fetch-data.service";
+import { ISignupUserCredentials } from "../../interfaces/user.interface";
 
-import styles from "./login-form.module.scss";
+import styles from "./signup-form.module.scss";
 
-const LogInFormComponent = () => {
+const SignupFormComponent = () => {
   const { setModalShow, setErrorMessage } = useContext(ErrorContext);
   const { setUserData } = useContext(UserContext);
 
@@ -17,11 +17,11 @@ const LogInFormComponent = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<ILoginUserCredentials>();
+  } = useForm<ISignupUserCredentials>();
 
-  const onSubmit = async (input: ILoginUserCredentials) => {
+  const onSubmit = async (input: ISignupUserCredentials) => {
     try {
-      const response = await fetchLoginUser(input);
+      const response = await fetchSignupUser(input);
 
       if (response.hasOwnProperty("error")) {
         setModalShow(true);
@@ -32,7 +32,7 @@ const LogInFormComponent = () => {
       setUserData(response);
     } catch (error) {
       setModalShow(true);
-      setErrorMessage("An error occurred while logging in.");
+      setErrorMessage("An error occurred while signing up.");
     }
   };
 
@@ -44,17 +44,29 @@ const LogInFormComponent = () => {
         <Form
           id="loginForm"
           onSubmit={handleSubmit(onSubmit)}
-          className={`${styles.klRow__loginForm} shadow-lg rounded-4 p-4`}
+          className={`${styles.klRow__signupForm} shadow-lg rounded-4 p-4`}
         >
           <Form.Group className="mb-3" controlId="formBasicLogin">
-            <Form.Label>Login</Form.Label>
+            <Form.Label>Username</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter login"
-              {...register("login", { required: "Required" })}
+              placeholder="Enter username"
+              {...register("username", { required: "Required" })}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.login?.message}
+              {errors.username?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicLogin">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter email"
+              {...register("email", { required: "Required" })}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.email?.message}
             </Form.Control.Feedback>
           </Form.Group>
 
@@ -71,6 +83,19 @@ const LogInFormComponent = () => {
             </Form.Control.Feedback>
           </Form.Group>
 
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Confirm password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              isInvalid={!!errors.confirmPassword}
+              {...register("confirmPassword", { required: "Required" })}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.confirmPassword?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
           <Button
             className="mb-3"
             variant="outline-secondary"
@@ -78,14 +103,14 @@ const LogInFormComponent = () => {
             form="loginForm"
             disabled={isSubmitting}
           >
-            Log in
+            Sign up
           </Button>
 
           <Form.Group className="mb-3" controlId="formBasicText">
             <Form.Text className="text-muted">
-              You don't have an account?{" "}
-              <Link to="/signup" className="p-0">
-                Sign up
+              Do you have an account?{" "}
+              <Link to="/login" className="p-0">
+                Log in
               </Link>
             </Form.Text>
           </Form.Group>
@@ -95,4 +120,4 @@ const LogInFormComponent = () => {
   );
 };
 
-export default LogInFormComponent;
+export default SignupFormComponent;

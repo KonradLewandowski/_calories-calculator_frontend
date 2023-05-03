@@ -4,19 +4,16 @@ import ErrorContext from "../../contexts/error.context";
 
 import styles from "./error-modal.module.scss";
 
-interface IProps {
-  show: boolean;
-  onHide: () => void;
-}
-
-const ErrorModalComponent = (props: IProps) => {
-  const { errorMessage, errorStatus } = useContext(ErrorContext);
+const ErrorModalComponent = () => {
+  const { errorMessage, setModalShow, modalShow } = useContext(ErrorContext);
+  const handleClose = () => setModalShow(false);
   return (
     <Modal
-      {...props}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      onHide={handleClose}
+      show={modalShow}
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
@@ -24,7 +21,6 @@ const ErrorModalComponent = (props: IProps) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h3>{errorStatus}</h3>
         <p>{errorMessage}</p>
       </Modal.Body>
     </Modal>

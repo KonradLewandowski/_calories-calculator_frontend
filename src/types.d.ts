@@ -1,5 +1,5 @@
 export {};
 
 declare global {
-  type TProvider = { ({ children }: { children: JSX.Element }): JSX.Element };
+  type TProvider = { ({ children }: { children: JSX.Elements }): JSX.Elements };
 }

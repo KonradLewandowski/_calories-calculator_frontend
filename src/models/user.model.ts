@@ -7,8 +7,3 @@ export interface IUserModel {
   error: string;
   status: number;
 }
-
-export interface ILoginUserCredentials {
-  login: string;
-  password: string;
-}
