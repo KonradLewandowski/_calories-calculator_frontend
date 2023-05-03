@@ -8,6 +8,7 @@ import {
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const fetchData = async (input: RequestInfo, init?: RequestInit) => {
+  console.log(serverUrl);
   return await fetch(input, init);
 };
 
