@@ -1,4 +1,4 @@
-import { Button, Nav } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import UserContext from "../../contexts/user.context";
@@ -31,11 +31,12 @@ const NavigationComponent = () => {
         setErrorMessage("An error occurred while logging in.");
       }
     })();
+    // eslint-disable-next-line
   }, []);
 
   const onLogOut = async () => {
     try {
-      const response = await fetchLogOut();
+      await fetchLogOut();
 
       setUserData(null);
     } catch (error) {

@@ -5,7 +5,7 @@ import {
   IConfirmEmailToken,
 } from "../interfaces/user.interface";
 
-const fetchUrlProd = "https://calories-calculator-api.herokuapp.com/api/users";
+// const fetchUrlProd = "https://calories-calculator-api.herokuapp.com/api/users";
 const fetchUrlDev = "http://localhost:3030/api/users";
 const fetchData = async (input: RequestInfo, init?: RequestInit) => {
   return await fetch(input, init);
@@ -66,14 +66,11 @@ export const fetchSignupUser = async (
 };
 
 export const fetchConfirmEmail = async (token: IConfirmEmailToken) => {
-  const confirmPassword = await fetchData(
-    `${fetchUrlDev}/confirm-password/${token}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    }
-  );
+  await fetchData(`${fetchUrlDev}/confirm-password/${token}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
 };

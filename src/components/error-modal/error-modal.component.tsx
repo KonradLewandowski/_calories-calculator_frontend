@@ -2,7 +2,7 @@ import { Modal } from "react-bootstrap";
 import { useContext } from "react";
 import ErrorContext from "../../contexts/error.context";
 
-import styles from "./error-modal.module.scss";
+// import styles from "./error-modal.module.scss";
 
 const ErrorModalComponent = () => {
   const { errorMessage, setModalShow, modalShow } = useContext(ErrorContext);
