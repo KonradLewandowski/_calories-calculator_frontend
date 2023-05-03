@@ -33,6 +33,7 @@ const SignupFormComponent = () => {
     } catch (error) {
       setModalShow(true);
       setErrorMessage("An error occurred while signing up.");
+      console.error(error);
     }
   };
 

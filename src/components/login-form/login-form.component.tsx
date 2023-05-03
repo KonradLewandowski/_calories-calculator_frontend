@@ -33,6 +33,7 @@ const LogInFormComponent = () => {
     } catch (error) {
       setModalShow(true);
       setErrorMessage("An error occurred while logging in.");
+      console.error(error);
     }
   };
 
