@@ -4,20 +4,20 @@ import {
   ISignupUserCredentials,
   IConfirmEmailToken,
 } from "../interfaces/user.interface";
+import env from "../utils/validate_env.util";
 
-// const fetchUrlProd = "https://calories-calculator-api.herokuapp.com/api/users";
-const fetchUrlDev = "http://localhost:3030/api/users";
+const serverUrl = env.SERVER_URL;
 const fetchData = async (input: RequestInfo, init?: RequestInit) => {
   return await fetch(input, init);
 };
 
 export const fetchUsers = async (): Promise<IUserModel[]> => {
-  const users = await fetchData(`${fetchUrlDev}/all`, { method: "GET" });
+  const users = await fetchData(`${serverUrl}/all`, { method: "GET" });
   return users.json();
 };
 
 export const fetchLoggedUser = async (): Promise<IUserModel | null> => {
-  const user = await fetchData(`${fetchUrlDev}/auth`, {
+  const user = await fetchData(`${serverUrl}/auth`, {
     method: "GET",
     credentials: "include",
   });
@@ -26,7 +26,7 @@ export const fetchLoggedUser = async (): Promise<IUserModel | null> => {
 };
 
 export const fetchLogOut = async (): Promise<{}> => {
-  return await fetchData(`${fetchUrlDev}/logout`, {
+  return await fetchData(`${serverUrl}/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +38,7 @@ export const fetchLogOut = async (): Promise<{}> => {
 export const fetchLoginUser = async (
   userCredentials: ILoginUserCredentials
 ): Promise<IUserModel> => {
-  const loginUser = await fetchData(`${fetchUrlDev}/login`, {
+  const loginUser = await fetchData(`${serverUrl}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -53,7 +53,7 @@ export const fetchLoginUser = async (
 export const fetchSignupUser = async (
   userCredentials: ISignupUserCredentials
 ): Promise<IUserModel> => {
-  const signupUser = await fetchData(`${fetchUrlDev}/signup`, {
+  const signupUser = await fetchData(`${serverUrl}/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -66,7 +66,7 @@ export const fetchSignupUser = async (
 };
 
 export const fetchConfirmEmail = async (token: IConfirmEmailToken) => {
-  await fetchData(`${fetchUrlDev}/confirm-password/${token}`, {
+  await fetchData(`${serverUrl}/confirm-password/${token}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
