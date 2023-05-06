@@ -9,7 +9,3 @@ export interface ISignupUserCredentials {
   password: string;
   confirmPassword: string;
 }
-
-export interface IConfirmEmailToken {
-  token: string;
-}

@@ -2,13 +2,12 @@ import { IUserModel } from "../models/user.model";
 import {
   ILoginUserCredentials,
   ISignupUserCredentials,
-  IConfirmEmailToken,
 } from "../interfaces/user.interface";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const fetchData = async (input: RequestInfo, init?: RequestInit) => {
-  console.log(serverUrl);
+  // console.log("fetchData response: ", await fetch(input, init));
   return await fetch(input, init);
 };
 
@@ -21,8 +20,9 @@ export const fetchLoggedUser = async (): Promise<IUserModel | null> => {
   const user = await fetchData(`${serverUrl}/auth`, {
     method: "GET",
     credentials: "include",
+    mode: "cors",
   });
-
+  // console.log("fetchLoggedUser response: ", user);
   return user.json();
 };
 
@@ -66,12 +66,16 @@ export const fetchSignupUser = async (
   return signupUser.json();
 };
 
-export const fetchConfirmEmail = async (token: IConfirmEmailToken) => {
-  await fetchData(`${serverUrl}/confirm-password/${token}`, {
+export const fetchConfirmEmail = async (
+  token: string | null
+): Promise<IUserModel> => {
+  const confirmedUser = await fetchData(`${serverUrl}/confirm-email/${token}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     credentials: "include",
   });
+
+  return confirmedUser.json();
 };

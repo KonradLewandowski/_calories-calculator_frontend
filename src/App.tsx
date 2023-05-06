@@ -1,10 +1,10 @@
 import { UserProvider } from "./contexts/user.context";
 import { ErrorProvider } from "./contexts/error.context";
 
-import HeaderComponent from "./components/header/header.component";
 import NavigationComponent from "./components/navigation/navigation.component";
 import FooterComponent from "./components/footer/footer.component";
 import SignupFormComponent from "./components/signup-form/signup-form.component";
+import ConfirmEmailComponent from "./components/confirm-email/confirm-email.component";
 import LogInFormComponent from "./components/login-form/login-form.component";
 
 import "./App.scss";
@@ -15,11 +15,14 @@ function App() {
     <>
       <ErrorProvider>
         <UserProvider>
-          <HeaderComponent />
           <NavigationComponent />
           <main className="p-4">
             <Routes>
               <Route path="/signup" element={<SignupFormComponent />} />
+              <Route
+                path="/confirm-email"
+                element={<ConfirmEmailComponent />}
+              />
               <Route path="/login" element={<LogInFormComponent />} />
             </Routes>
           </main>

@@ -20,6 +20,8 @@ const NavigationComponent = () => {
       try {
         const response = await fetchLoggedUser();
 
+        // console.log("NavigationComponent response: ", response);
+
         if (response?.hasOwnProperty("error") || null) {
           return;
         }
@@ -28,7 +30,7 @@ const NavigationComponent = () => {
       } catch (error) {
         setModalShow(true);
         setErrorMessage("An error occurred while logging in.");
-        console.error(error);
+        // console.error("NavigationComponent ERROR: ", error);
       }
     })();
     // eslint-disable-next-line
