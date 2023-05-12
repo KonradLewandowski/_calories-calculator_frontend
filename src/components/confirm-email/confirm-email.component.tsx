@@ -23,17 +23,21 @@ const ConfirmEmailComponent = () => {
         const token = getToken();
         const response = await fetchConfirmEmail(token);
 
-        if (response.hasOwnProperty("error")) {
+        if (response.hasOwnProperty("errorMessage")) {
           setModalShow(true);
-          setErrorMessage(response.error);
+          setErrorMessage(response.errorMessage);
           return;
         }
+
+        setModalShow(true);
+        setErrorMessage("Email confirmed! You can log in!");
 
         navigate("/login");
       } catch (error) {
         setModalShow(true);
         setErrorMessage("An error occurred while confirming.");
         console.error("ConfirmEmailComponent Error: ", error);
+
         navigate("/");
       }
     })();

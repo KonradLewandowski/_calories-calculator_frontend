@@ -1,5 +1,5 @@
-import { Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Nav, Spinner } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import UserContext from "../../contexts/user.context";
 import ErrorContext from "../../contexts/error.context";
@@ -12,25 +12,25 @@ import {
 import styles from "./navigation.module.scss";
 
 const NavigationComponent = () => {
-  const { setModalShow, setErrorMessage } = useContext(ErrorContext);
+  const { setModalShow, setErrorMessage, loading } = useContext(ErrorContext);
   const { userData, setUserData } = useContext(UserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
       try {
         const response = await fetchLoggedUser();
 
-        // console.log("NavigationComponent response: ", response);
-
-        if (response?.hasOwnProperty("error") || null) {
+        if (response?.hasOwnProperty("errorMessage") || null) {
           return;
         }
 
         setUserData(response);
+        navigate("/");
       } catch (error) {
         setModalShow(true);
         setErrorMessage("An error occurred while logging in.");
-        // console.error("NavigationComponent ERROR: ", error);
+        console.error("NavigationComponent ERROR: ", error);
       }
     })();
     // eslint-disable-next-line
@@ -50,6 +50,11 @@ const NavigationComponent = () => {
   return (
     <nav className={`bg-secondary bg-gradient`}>
       <Nav className={`${styles.klNav} p-2 justify-content-end container `}>
+        {/*{true && (*/}
+        {/*  <Spinner animation="border" role="status" size="sm">*/}
+        {/*    <span className="visually-hidden">Loading...</span>*/}
+        {/*  </Spinner>*/}
+        {/*)}*/}
         <ErrorModalComponent />
         {userData ? (
           <Nav.Item

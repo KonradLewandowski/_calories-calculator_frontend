@@ -4,6 +4,6 @@ export interface IUserModel {
   email: string;
   password: string;
   avatar: string;
-  error: string;
+  errorMessage: string;
   status: number;
 }

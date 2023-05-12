@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Container, Form, Row } from "react-bootstrap";
 import ErrorContext from "../../contexts/error.context";
 import UserContext from "../../contexts/user.context";
@@ -12,6 +12,7 @@ import styles from "./signup-form.module.scss";
 const SignupFormComponent = () => {
   const { setModalShow, setErrorMessage } = useContext(ErrorContext);
   const { setUserData } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -23,17 +24,17 @@ const SignupFormComponent = () => {
     try {
       const response = await fetchSignupUser(input);
 
-      if (response.hasOwnProperty("error")) {
+      if (response.hasOwnProperty("errorMessage")) {
         setModalShow(true);
-        setErrorMessage(response.error);
+        setErrorMessage(response.errorMessage);
         return;
       }
 
-      setUserData(response);
+      navigate("/login");
     } catch (error) {
       setModalShow(true);
       setErrorMessage("An error occurred while signing up.");
-      console.error(error);
+      console.error("SingUpComponent Error: ", error);
     }
   };
 
