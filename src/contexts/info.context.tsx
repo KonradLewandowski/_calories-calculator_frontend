@@ -3,38 +3,36 @@ import { createContext, useState } from "react";
 interface IValueProviderError {
   modalShow: boolean;
   setModalShow: (data: boolean) => void;
-  errorMessage: string;
-  setErrorMessage: (data: string) => void;
+  infoMessage: string;
+  setInfoMessage: (data: string) => void;
   loading: boolean;
   setLoading: (data: boolean) => void;
 }
 
-const ErrorContext = createContext<IValueProviderError>({
+const InfoContext = createContext<IValueProviderError>({
   modalShow: false,
   setModalShow: () => {},
-  errorMessage: "",
-  setErrorMessage: () => {},
+  infoMessage: "",
+  setInfoMessage: () => {},
   loading: false,
   setLoading: () => {},
 });
 
 export const ErrorProvider: TProvider = ({ children }) => {
   const [modalShow, setModalShow] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [infoMessage, setInfoMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const value: IValueProviderError = {
     modalShow,
     setModalShow,
-    errorMessage,
-    setErrorMessage,
+    infoMessage,
+    setInfoMessage,
     loading,
     setLoading,
   };
 
-  return (
-    <ErrorContext.Provider value={value}>{children}</ErrorContext.Provider>
-  );
+  return <InfoContext.Provider value={value}>{children}</InfoContext.Provider>;
 };
 
-export default ErrorContext;
+export default InfoContext;

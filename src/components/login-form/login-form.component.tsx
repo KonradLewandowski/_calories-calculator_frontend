@@ -5,12 +5,12 @@ import { Button, Form, Container, Row } from "react-bootstrap";
 import { fetchLoginUser } from "../../services/fetch-data.service";
 import { ILoginUserCredentials } from "../../interfaces/user.interface";
 import UserContext from "../../contexts/user.context";
-import ErrorContext from "../../contexts/error.context";
+import InfoContext from "../../contexts/info.context";
 
 import styles from "./login-form.module.scss";
 
 const LogInFormComponent = () => {
-  const { setModalShow, setErrorMessage } = useContext(ErrorContext);
+  const { setModalShow, setInfoMessage, setLoading } = useContext(InfoContext);
   const { setUserData } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -21,12 +21,13 @@ const LogInFormComponent = () => {
   } = useForm<ILoginUserCredentials>();
 
   const handleFormSubmit = async (input: ILoginUserCredentials) => {
+    setLoading(true);
     try {
       const response = await fetchLoginUser(input);
 
       if (response.hasOwnProperty("errorMessage")) {
         setModalShow(true);
-        setErrorMessage(response.errorMessage);
+        setInfoMessage(response.errorMessage);
         return;
       }
 
@@ -35,9 +36,11 @@ const LogInFormComponent = () => {
       navigate("/");
     } catch (error) {
       setModalShow(true);
-      setErrorMessage("An error occurred while logging in.");
+      setInfoMessage("An error occurred while logging in.");
+
       console.error("LoginFormComponent Error: ", error);
     }
+    setLoading(false);
   };
 
   return (

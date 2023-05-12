@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
@@ -14,7 +14,7 @@ import {
   fetchResetPassword,
 } from "../../services/fetch-data.service";
 import { IEmailCredentials } from "../../interfaces/user.interface";
-import ErrorContext from "../../contexts/error.context";
+import InfoContext from "../../contexts/info.context";
 
 import styles from "./reset-page.module.scss";
 
@@ -23,8 +23,7 @@ enum ISubmitType {
   Token = "token",
 }
 const ResetPageComponent = () => {
-  const { setModalShow, setErrorMessage, setLoading } =
-    useContext(ErrorContext);
+  const { setModalShow, setInfoMessage, setLoading } = useContext(InfoContext);
   const [submitType, setSubmitType] = useState<ISubmitType>(
     ISubmitType.Password
   );
@@ -42,17 +41,17 @@ const ResetPageComponent = () => {
 
       if (response.hasOwnProperty("errorMessage")) {
         setModalShow(true);
-        setErrorMessage(response.errorMessage);
+        setInfoMessage(response.errorMessage);
         return;
       }
 
       setModalShow(true);
-      setErrorMessage("The token has been sent. Check your email.");
+      setInfoMessage("The token has been sent. Check your email.");
 
       navigate("/login");
     } catch (error) {
       setModalShow(true);
-      setErrorMessage("An error occurred while resending the token");
+      setInfoMessage("An error occurred while resending the token");
       console.error("LoginFormComponent Error: ", error);
     }
     setLoading(false);
@@ -64,19 +63,19 @@ const ResetPageComponent = () => {
 
       if (response.hasOwnProperty("errorMessage")) {
         setModalShow(true);
-        setErrorMessage(response.errorMessage);
+        setInfoMessage(response.errorMessage);
         return;
       }
 
       setModalShow(true);
-      setErrorMessage(
+      setInfoMessage(
         "The reset password token has been sent. Check your email."
       );
 
       navigate("/login");
     } catch (error) {
       setModalShow(true);
-      setErrorMessage("An error occurred while resetting password.");
+      setInfoMessage("An error occurred while resetting password.");
       console.error("LoginFormComponent Error: ", error);
     }
     setLoading(false);

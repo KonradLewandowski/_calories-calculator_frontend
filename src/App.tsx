@@ -1,5 +1,5 @@
 import { UserProvider } from "./contexts/user.context";
-import { ErrorProvider } from "./contexts/error.context";
+import { ErrorProvider } from "./contexts/info.context";
 
 import LandingPageComponent from "./components/landing-page/landing-page.component";
 import NavigationComponent from "./components/navigation/navigation.component";
@@ -8,9 +8,11 @@ import SignupFormComponent from "./components/signup-form/signup-form.component"
 import ConfirmEmailComponent from "./components/confirm-email/confirm-email.component";
 import LogInFormComponent from "./components/login-form/login-form.component";
 import ResetPageComponent from "./components/reset-page/reset-page.component";
+import ResetPasswordPageComponent from "./components/reset-password-page/reset-password-page.component";
 
 import "./App.scss";
 import { Route, Routes } from "react-router-dom";
+import EditDataPageComponent from "./components/edit-data-page/edit-data-page.component";
 
 function App() {
   return (
@@ -28,6 +30,11 @@ function App() {
               />
               <Route path="/login" element={<LogInFormComponent />} />
               <Route path="/reset-page" element={<ResetPageComponent />} />
+              <Route
+                path="/reset-password"
+                element={<ResetPasswordPageComponent />}
+              />
+              <Route path="edit-data" element={<EditDataPageComponent />} />
             </Routes>
           </main>
           <FooterComponent />

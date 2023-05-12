@@ -1,14 +1,15 @@
 import { IUserModel } from "../models/user.model";
 import {
+  IToken,
   IEmailCredentials,
   ILoginUserCredentials,
   ISignupUserCredentials,
+  INewPassword,
 } from "../interfaces/user.interface";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const fetchData = async (input: RequestInfo, init?: RequestInit) => {
-  // console.log("fetchData response: ", await fetch(input, init));
   return await fetch(input, init);
 };
 
@@ -23,7 +24,7 @@ export const fetchLoggedUser = async (): Promise<IUserModel | null> => {
     credentials: "include",
     mode: "cors",
   });
-  console.log("fetchLoggedUser response: ", fetchedData);
+
   return fetchedData.json();
 };
 
@@ -68,7 +69,7 @@ export const fetchSignupUser = async (
 };
 
 export const fetchConfirmEmail = async (
-  token: string | null
+  token: IToken["token"]
 ): Promise<IUserModel> => {
   const fetchedData = await fetchData(`${serverUrl}/confirm-email/${token}`, {
     method: "POST",
@@ -100,6 +101,22 @@ export const fetchResetPassword = async (
   bodyData: IEmailCredentials
 ): Promise<IUserModel> => {
   const fetchedData = await fetchData(`${serverUrl}/reset-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(bodyData),
+  });
+
+  return fetchedData.json();
+};
+
+export const fetchNewPassword = async (
+  token: IToken["token"],
+  bodyData: INewPassword
+): Promise<IUserModel> => {
+  const fetchedData = await fetchData(`${serverUrl}/new-password/${token}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

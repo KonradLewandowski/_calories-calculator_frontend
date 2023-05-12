@@ -1,14 +1,14 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, Fragment } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { fetchConfirmEmail } from "../../services/fetch-data.service";
-import ErrorContext from "../../contexts/error.context";
+import InfoContext from "../../contexts/info.context";
 
 interface IToken {
   getToken(): string | null;
 }
 
 const ConfirmEmailComponent = () => {
-  const { setModalShow, setErrorMessage } = useContext(ErrorContext);
+  const { setModalShow, setInfoMessage, setLoading } = useContext(InfoContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,32 +19,34 @@ const ConfirmEmailComponent = () => {
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       try {
         const token = getToken();
         const response = await fetchConfirmEmail(token);
 
         if (response.hasOwnProperty("errorMessage")) {
           setModalShow(true);
-          setErrorMessage(response.errorMessage);
+          setInfoMessage(response.errorMessage);
           return;
         }
 
         setModalShow(true);
-        setErrorMessage("Email confirmed! You can log in!");
+        setInfoMessage("Email confirmed! You can log in!");
 
         navigate("/login");
       } catch (error) {
         setModalShow(true);
-        setErrorMessage("An error occurred while confirming.");
+        setInfoMessage("An error occurred while confirming.");
         console.error("ConfirmEmailComponent Error: ", error);
 
         navigate("/");
       }
+      setLoading(false);
     })();
     // eslint-disable-next-line
   }, []);
 
-  return <div> Confirm email </div>;
+  return <Fragment />;
 };
 
 export default ConfirmEmailComponent;

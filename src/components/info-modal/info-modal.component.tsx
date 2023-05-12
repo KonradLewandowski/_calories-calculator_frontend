@@ -1,11 +1,11 @@
 import { Modal } from "react-bootstrap";
 import { useContext } from "react";
-import ErrorContext from "../../contexts/error.context";
+import InfoContext from "../../contexts/info.context";
 
-// import styles from "./error-modal.module.scss";
+// import styles from "./info-modal.module.scss";
 
-const ErrorModalComponent = () => {
-  const { errorMessage, setModalShow, modalShow } = useContext(ErrorContext);
+const InfoModalComponent = () => {
+  const { infoMessage, setModalShow, modalShow } = useContext(InfoContext);
   const handleClose = () => setModalShow(false);
   return (
     <Modal
@@ -21,10 +21,10 @@ const ErrorModalComponent = () => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>{errorMessage}</p>
+        <p>{infoMessage}</p>
       </Modal.Body>
     </Modal>
   );
 };
 
-export default ErrorModalComponent;
+export default InfoModalComponent;

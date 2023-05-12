@@ -1,27 +1,38 @@
 import { useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
 import { Button, Container, Form, Row } from "react-bootstrap";
+import { INewPassword } from "../../interfaces/user.interface";
+import { fetchNewPassword } from "../../services/fetch-data.service";
 import InfoContext from "../../contexts/info.context";
-import { fetchSignupUser } from "../../services/fetch-data.service";
-import { ISignupUserCredentials } from "../../interfaces/user.interface";
 
-import styles from "./signup-form.module.scss";
+import styles from "./reset-password-page.module.scss";
 
-const SignupFormComponent = () => {
+interface IToken {
+  getToken(): string | null;
+}
+
+const ResetPasswordPageComponent = () => {
   const { setModalShow, setInfoMessage, setLoading } = useContext(InfoContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<ISignupUserCredentials>();
+  } = useForm<INewPassword>();
 
-  const handleFormSubmit = async (input: ISignupUserCredentials) => {
+  const getToken: IToken["getToken"] = () => {
+    const urlParams = new URLSearchParams(location.hash.substring(1));
+    return urlParams.get("token");
+  };
+
+  const handleFormSubmit = async (input: INewPassword) => {
     setLoading(true);
     try {
-      const response = await fetchSignupUser(input);
+      const token = getToken();
+      const response = await fetchNewPassword(token, input);
 
       if (response.hasOwnProperty("errorMessage")) {
         setModalShow(true);
@@ -29,10 +40,14 @@ const SignupFormComponent = () => {
         return;
       }
 
+      setModalShow(true);
+      setInfoMessage("New password has been set. Please, log in.");
+
       navigate("/login");
     } catch (error) {
       setModalShow(true);
-      setInfoMessage("An error occurred while signing up.");
+      setInfoMessage("An error occurred while setting a new password.");
+
       console.error("SingUpComponent Error: ", error);
     }
     setLoading(false);
@@ -44,39 +59,15 @@ const SignupFormComponent = () => {
         className={`d-flex align-items-center justify-content-center ${styles.klRow}`}
       >
         <Form
-          id="loginForm"
+          id="resetPasswordForm"
           onSubmit={handleSubmit(handleFormSubmit)}
-          className={`${styles.klRow__signupForm} shadow-lg rounded-4 p-4`}
+          className={`${styles.klRow__resetPasswordForm} shadow-lg rounded-4 p-4`}
         >
-          <Form.Group className="mb-3" controlId="formBasicLogin">
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter username"
-              {...register("username", { required: "Required" })}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.username?.message}
-            </Form.Control.Feedback>
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicLogin">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter email"
-              {...register("email", { required: "Required" })}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.email?.message}
-            </Form.Control.Feedback>
-          </Form.Group>
-
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Password"
+              placeholder="Enter new password"
               isInvalid={!!errors.password}
               {...register("password", { required: "Required" })}
             />
@@ -89,7 +80,7 @@ const SignupFormComponent = () => {
             <Form.Label>Confirm password</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Password"
+              placeholder="Enter new password again"
               isInvalid={!!errors.confirmPassword}
               {...register("confirmPassword", { required: "Required" })}
             />
@@ -102,24 +93,15 @@ const SignupFormComponent = () => {
             className="mb-3"
             variant="outline-secondary"
             type="submit"
-            form="loginForm"
+            form="resetPasswordForm"
             disabled={isSubmitting}
           >
-            Sign up
+            Confirm
           </Button>
-
-          <Form.Group className="mb-3" controlId="formBasicText">
-            <Form.Text className="text-muted">
-              Do you have an account?{" "}
-              <Link to="/login" className="p-0">
-                Log in
-              </Link>
-            </Form.Text>
-          </Form.Group>
         </Form>
       </Row>
     </Container>
   );
 };
 
-export default SignupFormComponent;
+export default ResetPasswordPageComponent;

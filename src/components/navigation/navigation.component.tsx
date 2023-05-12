@@ -2,8 +2,8 @@ import { Nav, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import UserContext from "../../contexts/user.context";
-import ErrorContext from "../../contexts/error.context";
-import ErrorModalComponent from "../error-modal/error-modal.component";
+import InfoContext from "../../contexts/info.context";
+import ErrorModalComponent from ".././info-modal/info-modal.component";
 import {
   fetchLoggedUser,
   fetchLogOut,
@@ -12,7 +12,8 @@ import {
 import styles from "./navigation.module.scss";
 
 const NavigationComponent = () => {
-  const { setModalShow, setErrorMessage, loading } = useContext(ErrorContext);
+  const { setModalShow, setInfoMessage, setLoading, loading } =
+    useContext(InfoContext);
   const { userData, setUserData } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -26,48 +27,58 @@ const NavigationComponent = () => {
         }
 
         setUserData(response);
+
         navigate("/");
       } catch (error) {
         setModalShow(true);
-        setErrorMessage("An error occurred while logging in.");
+        setInfoMessage("An error occurred while logging in.");
+
         console.error("NavigationComponent ERROR: ", error);
       }
     })();
     // eslint-disable-next-line
   }, []);
 
-  const onLogOut = async () => {
+  const handleLogOut = async () => {
+    setLoading(true);
     try {
       await fetchLogOut();
 
+      setModalShow(true);
+      setInfoMessage("User logged out.");
       setUserData(null);
     } catch (error) {
       setModalShow(true);
-      setErrorMessage("An error occurred while logging out.");
-      console.error(error);
+      setInfoMessage("An error occurred while logging out.");
+
+      console.error("handleLogOut ERROR: ", error);
     }
+    setLoading(false);
   };
+
   return (
     <nav className={`bg-secondary bg-gradient`}>
       <Nav className={`${styles.klNav} p-2 justify-content-end container `}>
-        {/*{true && (*/}
-        {/*  <Spinner animation="border" role="status" size="sm">*/}
-        {/*    <span className="visually-hidden">Loading...</span>*/}
-        {/*  </Spinner>*/}
-        {/*)}*/}
+        {loading && (
+          <Spinner animation="border" role="status" size="sm">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        )}
         <ErrorModalComponent />
         {userData ? (
           <Nav.Item
             className={`${styles.klNav__links} d-flex align-items-center gap-2 text-light`}
           >
-            <Link to="/" onClick={onLogOut}>
+            <Link to="/" onClick={handleLogOut}>
               Log out
             </Link>
-            <img
-              src={userData?.avatar}
-              alt={userData?.username}
-              className={`${styles.klNav__avatar} rounded-circle`}
-            />
+            <Link to="/edit-data">
+              <img
+                src={userData?.avatar}
+                alt={userData?.username}
+                className={`${styles.klNav__avatar} rounded-circle`}
+              />
+            </Link>
           </Nav.Item>
         ) : (
           <Nav.Item
