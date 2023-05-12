@@ -9,3 +9,7 @@ export interface ISignupUserCredentials {
   password: string;
   confirmPassword: string;
 }
+
+export interface IEmailCredentials {
+  email: string;
+}
