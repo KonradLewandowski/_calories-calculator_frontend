@@ -1,5 +1,6 @@
 import { IUserModel } from "../models/user.model";
 import {
+  IEmailCredentials,
   ILoginUserCredentials,
   ISignupUserCredentials,
 } from "../interfaces/user.interface";
@@ -12,18 +13,18 @@ const fetchData = async (input: RequestInfo, init?: RequestInit) => {
 };
 
 export const fetchUsers = async (): Promise<IUserModel[]> => {
-  const users = await fetchData(`${serverUrl}/all`, { method: "GET" });
-  return users.json();
+  const fetchedData = await fetchData(`${serverUrl}/all`, { method: "GET" });
+  return fetchedData.json();
 };
 
 export const fetchLoggedUser = async (): Promise<IUserModel | null> => {
-  const user = await fetchData(`${serverUrl}/auth`, {
+  const fetchedData = await fetchData(`${serverUrl}/auth`, {
     method: "GET",
     credentials: "include",
     mode: "cors",
   });
-  // console.log("fetchLoggedUser response: ", user);
-  return user.json();
+  console.log("fetchLoggedUser response: ", fetchedData);
+  return fetchedData.json();
 };
 
 export const fetchLogOut = async (): Promise<{}> => {
@@ -37,39 +38,39 @@ export const fetchLogOut = async (): Promise<{}> => {
 };
 
 export const fetchLoginUser = async (
-  userCredentials: ILoginUserCredentials
+  bodyData: ILoginUserCredentials
 ): Promise<IUserModel> => {
-  const loginUser = await fetchData(`${serverUrl}/login`, {
+  const fetchedData = await fetchData(`${serverUrl}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     credentials: "include",
-    body: JSON.stringify(userCredentials),
+    body: JSON.stringify(bodyData),
   });
 
-  return loginUser.json();
+  return fetchedData.json();
 };
 
 export const fetchSignupUser = async (
-  userCredentials: ISignupUserCredentials
+  bodyData: ISignupUserCredentials
 ): Promise<IUserModel> => {
-  const signupUser = await fetchData(`${serverUrl}/signup`, {
+  const fetchedData = await fetchData(`${serverUrl}/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     credentials: "include",
-    body: JSON.stringify(userCredentials),
+    body: JSON.stringify(bodyData),
   });
 
-  return signupUser.json();
+  return fetchedData.json();
 };
 
 export const fetchConfirmEmail = async (
   token: string | null
 ): Promise<IUserModel> => {
-  const confirmedUser = await fetchData(`${serverUrl}/confirm-email/${token}`, {
+  const fetchedData = await fetchData(`${serverUrl}/confirm-email/${token}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -77,5 +78,35 @@ export const fetchConfirmEmail = async (
     credentials: "include",
   });
 
-  return confirmedUser.json();
+  return fetchedData.json();
+};
+
+export const fetchResetToken = async (
+  bodyData: IEmailCredentials
+): Promise<IUserModel> => {
+  const fetchedData = await fetchData(`${serverUrl}/reset-token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(bodyData),
+  });
+
+  return fetchedData.json();
+};
+
+export const fetchResetPassword = async (
+  bodyData: IEmailCredentials
+): Promise<IUserModel> => {
+  const fetchedData = await fetchData(`${serverUrl}/reset-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(bodyData),
+  });
+
+  return fetchedData.json();
 };
