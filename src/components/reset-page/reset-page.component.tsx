@@ -17,13 +17,15 @@ import { IEmailCredentials } from "../../interfaces/user.interface";
 import InfoContext from "../../contexts/info.context";
 
 import styles from "./reset-page.module.scss";
+import { response } from "express";
 
 enum ISubmitType {
   Password = "password",
   Token = "token",
 }
 const ResetPageComponent = () => {
-  const { setModalShow, setInfoMessage, setLoading } = useContext(InfoContext);
+  const { setModalShow, setInfoMessage, setInfoStatus, setLoading } =
+    useContext(InfoContext);
   const [submitType, setSubmitType] = useState<ISubmitType>(
     ISubmitType.Password
   );
@@ -37,24 +39,24 @@ const ResetPageComponent = () => {
 
   const handleResetTokenSubmit = async (input: IEmailCredentials) => {
     try {
+      setModalShow(true);
       const response = await fetchResetToken(input);
 
       if (response.hasOwnProperty("errorMessage")) {
-        setModalShow(true);
         setInfoMessage(response.errorMessage);
         return;
       }
 
-      setModalShow(true);
       setInfoMessage("The token has been sent. Check your email.");
 
       navigate("/login");
     } catch (error) {
-      setModalShow(true);
       setInfoMessage("An error occurred while resending the token");
+
       console.error("LoginFormComponent Error: ", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleResetPasswordSubmit = async (input: IEmailCredentials) => {
@@ -77,8 +79,9 @@ const ResetPageComponent = () => {
       setModalShow(true);
       setInfoMessage("An error occurred while resetting password.");
       console.error("LoginFormComponent Error: ", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleFormSubmit = (input: IEmailCredentials) => {

@@ -40,8 +40,9 @@ const ConfirmEmailComponent = () => {
         console.error("ConfirmEmailComponent Error: ", error);
 
         navigate("/");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     })();
     // eslint-disable-next-line
   }, []);

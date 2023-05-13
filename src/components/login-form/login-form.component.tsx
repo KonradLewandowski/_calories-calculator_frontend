@@ -39,8 +39,9 @@ const LogInFormComponent = () => {
       setInfoMessage("An error occurred while logging in.");
 
       console.error("LoginFormComponent Error: ", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

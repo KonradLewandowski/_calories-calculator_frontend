@@ -49,8 +49,9 @@ const ResetPasswordPageComponent = () => {
       setInfoMessage("An error occurred while setting a new password.");
 
       console.error("SingUpComponent Error: ", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

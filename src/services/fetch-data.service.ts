@@ -1,4 +1,3 @@
-import { IUserModel } from "../models/user.model";
 import {
   IToken,
   IEmailCredentials,
@@ -6,6 +5,7 @@ import {
   ISignupUserCredentials,
   INewPassword,
 } from "../interfaces/user.interface";
+import { IBody } from "../interfaces/body.interface";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -13,12 +13,12 @@ const fetchData = async (input: RequestInfo, init?: RequestInit) => {
   return await fetch(input, init);
 };
 
-export const fetchUsers = async (): Promise<IUserModel[]> => {
+export const fetchUsers = async (): Promise<IBody[]> => {
   const fetchedData = await fetchData(`${serverUrl}/all`, { method: "GET" });
   return fetchedData.json();
 };
 
-export const fetchLoggedUser = async (): Promise<IUserModel | null> => {
+export const fetchLoggedUser = async (): Promise<IBody | null> => {
   const fetchedData = await fetchData(`${serverUrl}/auth`, {
     method: "GET",
     credentials: "include",
@@ -40,7 +40,7 @@ export const fetchLogOut = async (): Promise<{}> => {
 
 export const fetchLoginUser = async (
   bodyData: ILoginUserCredentials
-): Promise<IUserModel> => {
+): Promise<IBody> => {
   const fetchedData = await fetchData(`${serverUrl}/login`, {
     method: "POST",
     headers: {
@@ -55,7 +55,7 @@ export const fetchLoginUser = async (
 
 export const fetchSignupUser = async (
   bodyData: ISignupUserCredentials
-): Promise<IUserModel> => {
+): Promise<IBody> => {
   const fetchedData = await fetchData(`${serverUrl}/signup`, {
     method: "POST",
     headers: {
@@ -70,7 +70,7 @@ export const fetchSignupUser = async (
 
 export const fetchConfirmEmail = async (
   token: IToken["token"]
-): Promise<IUserModel> => {
+): Promise<IBody> => {
   const fetchedData = await fetchData(`${serverUrl}/confirm-email/${token}`, {
     method: "POST",
     headers: {
@@ -84,7 +84,7 @@ export const fetchConfirmEmail = async (
 
 export const fetchResetToken = async (
   bodyData: IEmailCredentials
-): Promise<IUserModel> => {
+): Promise<IBody> => {
   const fetchedData = await fetchData(`${serverUrl}/reset-token`, {
     method: "POST",
     headers: {
@@ -99,7 +99,7 @@ export const fetchResetToken = async (
 
 export const fetchResetPassword = async (
   bodyData: IEmailCredentials
-): Promise<IUserModel> => {
+): Promise<IBody> => {
   const fetchedData = await fetchData(`${serverUrl}/reset-password`, {
     method: "POST",
     headers: {
@@ -115,7 +115,7 @@ export const fetchResetPassword = async (
 export const fetchNewPassword = async (
   token: IToken["token"],
   bodyData: INewPassword
-): Promise<IUserModel> => {
+): Promise<IBody> => {
   const fetchedData = await fetchData(`${serverUrl}/new-password/${token}`, {
     method: "POST",
     headers: {

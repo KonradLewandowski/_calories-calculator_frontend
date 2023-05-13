@@ -1,3 +1,6 @@
+import { Route, Routes } from "react-router-dom";
+import EditDataPageComponent from "./components/edit-data-page/edit-data-page.component";
+
 import { UserProvider } from "./contexts/user.context";
 import { ErrorProvider } from "./contexts/info.context";
 
@@ -11,8 +14,6 @@ import ResetPageComponent from "./components/reset-page/reset-page.component";
 import ResetPasswordPageComponent from "./components/reset-password-page/reset-password-page.component";
 
 import "./App.scss";
-import { Route, Routes } from "react-router-dom";
-import EditDataPageComponent from "./components/edit-data-page/edit-data-page.component";
 
 function App() {
   return (
