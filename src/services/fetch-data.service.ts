@@ -18,7 +18,7 @@ export const fetchUsers = async (): Promise<IBody[]> => {
   return fetchedData.json();
 };
 
-export const fetchLoggedUser = async (): Promise<IBody | null> => {
+export const fetchLoggedUser = async (): Promise<IBody> => {
   const fetchedData = await fetchData(`${serverUrl}/auth`, {
     method: "GET",
     credentials: "include",
@@ -28,14 +28,16 @@ export const fetchLoggedUser = async (): Promise<IBody | null> => {
   return fetchedData.json();
 };
 
-export const fetchLogOut = async (): Promise<{}> => {
-  return await fetchData(`${serverUrl}/logout`, {
+export const fetchLogOut = async (): Promise<IBody> => {
+  const fetchedData = await fetchData(`${serverUrl}/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     credentials: "include",
   });
+
+  return fetchedData.json();
 };
 
 export const fetchLoginUser = async (

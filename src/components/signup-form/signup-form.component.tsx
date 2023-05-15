@@ -9,7 +9,7 @@ import { ISignupUserCredentials } from "../../interfaces/user.interface";
 import styles from "./signup-form.module.scss";
 
 const SignupFormComponent = () => {
-  const { setModalShow, setInfoMessage, setLoading } = useContext(InfoContext);
+  const { setModalShow, setInfoState, setLoading } = useContext(InfoContext);
   const navigate = useNavigate();
 
   const {
@@ -19,24 +19,21 @@ const SignupFormComponent = () => {
   } = useForm<ISignupUserCredentials>();
 
   const handleFormSubmit = async (input: ISignupUserCredentials) => {
-    setLoading(true);
     try {
+      setLoading(true);
+
       const response = await fetchSignupUser(input);
 
-      if (response.hasOwnProperty("errorMessage")) {
-        setModalShow(true);
-        setInfoMessage(response.errorMessage);
-        return;
-      }
-
-      navigate("/login");
+      setInfoState(response);
     } catch (error) {
-      setModalShow(true);
-      setInfoMessage("An error occurred while signing up.");
+      setInfoState({ errorMessage: "An error occurred while signing up." });
 
       console.error("SingUpComponent Error: ", error);
     } finally {
       setLoading(false);
+      setModalShow(true);
+
+      navigate("/login");
     }
   };
 

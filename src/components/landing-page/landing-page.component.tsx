@@ -1,4 +1,4 @@
-import styles from "./landing.module.scss";
+// import styles from "./landing-page.module.scss";
 
 const LandingPageComponent = () => {
   return <div>LandingPageComponent</div>;

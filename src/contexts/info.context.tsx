@@ -1,13 +1,15 @@
 import { createContext, useState } from "react";
-import { IBody } from "../interfaces/body.interface";
+import { IInfoState } from "../interfaces/info-state.interface";
 
+// interface IInfoState {
+//   errorMessage: string;
+//   status: "success" | "failure";
+// }
 interface IValueProviderError {
   modalShow: boolean;
   setModalShow: (data: boolean) => void;
-  infoMessage: IBody["errorMessage"];
-  setInfoMessage: (data: IBody["errorMessage"]) => void;
-  infoStatus: IBody["status"];
-  setInfoStatus: (data: IBody["status"]) => void;
+  infoState: IInfoState;
+  setInfoState: (data: IInfoState) => void;
   loading: boolean;
   setLoading: (data: boolean) => void;
 }
@@ -15,27 +17,25 @@ interface IValueProviderError {
 const InfoContext = createContext<IValueProviderError>({
   modalShow: false,
   setModalShow: () => {},
-  infoMessage: "",
-  setInfoMessage: () => {},
-  infoStatus: "success",
-  setInfoStatus: () => {},
+  infoState: { errorMessage: "", status: "failure" },
+  setInfoState: () => {},
   loading: false,
   setLoading: () => {},
 });
 
 export const ErrorProvider: TProvider = ({ children }) => {
   const [modalShow, setModalShow] = useState<boolean>(false);
-  const [infoMessage, setInfoMessage] = useState<IBody["errorMessage"]>("");
-  const [infoStatus, setInfoStatus] = useState<IBody["status"]>("success");
+  const [infoState, setInfoState] = useState<IInfoState>({
+    errorMessage: "",
+    status: "failure",
+  });
   const [loading, setLoading] = useState<boolean>(false);
 
   const value: IValueProviderError = {
     modalShow,
     setModalShow,
-    infoMessage,
-    setInfoMessage,
-    infoStatus,
-    setInfoStatus,
+    infoState,
+    setInfoState,
     loading,
     setLoading,
   };

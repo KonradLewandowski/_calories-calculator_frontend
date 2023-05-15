@@ -12,7 +12,7 @@ import {
 import styles from "./navigation.module.scss";
 
 const NavigationComponent = () => {
-  const { setModalShow, setInfoMessage, setLoading, loading } =
+  const { setModalShow, setInfoState, setLoading, loading } =
     useContext(InfoContext);
   const { userData, setUserData } = useContext(UserContext);
   const navigate = useNavigate();
@@ -20,18 +20,12 @@ const NavigationComponent = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetchLoggedUser();
+        const { body } = await fetchLoggedUser();
 
-        if (response?.hasOwnProperty("errorMessage") || null) {
-          return;
-        }
-
-        setUserData(response);
-
-        navigate("/");
+        setUserData(body);
       } catch (error) {
+        setInfoState({ errorMessage: "An error occurred while logging in." });
         setModalShow(true);
-        setInfoMessage("An error occurred while logging in.");
 
         console.error("NavigationComponent ERROR: ", error);
       }
@@ -40,20 +34,22 @@ const NavigationComponent = () => {
   }, []);
 
   const handleLogOut = async () => {
-    setLoading(true);
     try {
-      await fetchLogOut();
+      setLoading(true);
 
-      setModalShow(true);
-      setInfoMessage("User logged out.");
+      const response = await fetchLogOut();
+
+      setInfoState(response);
       setUserData(null);
     } catch (error) {
-      setModalShow(true);
-      setInfoMessage("An error occurred while logging out.");
+      setInfoState({ errorMessage: "An error occurred while logging out." });
 
       console.error("handleLogOut ERROR: ", error);
     } finally {
       setLoading(false);
+      setModalShow(true);
+
+      navigate("/");
     }
   };
 

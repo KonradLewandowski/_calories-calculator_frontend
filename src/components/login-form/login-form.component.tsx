@@ -10,7 +10,7 @@ import InfoContext from "../../contexts/info.context";
 import styles from "./login-form.module.scss";
 
 const LogInFormComponent = () => {
-  const { setModalShow, setInfoMessage, setLoading } = useContext(InfoContext);
+  const { setModalShow, setInfoState, setLoading } = useContext(InfoContext);
   const { setUserData } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -21,26 +21,22 @@ const LogInFormComponent = () => {
   } = useForm<ILoginUserCredentials>();
 
   const handleFormSubmit = async (input: ILoginUserCredentials) => {
-    setLoading(true);
     try {
+      setLoading(true);
+
       const response = await fetchLoginUser(input);
 
-      if (response.hasOwnProperty("errorMessage")) {
-        setModalShow(true);
-        setInfoMessage(response.errorMessage);
-        return;
-      }
-
-      setUserData(response);
-
-      navigate("/");
+      setInfoState(response);
+      setUserData(response.body);
     } catch (error) {
-      setModalShow(true);
-      setInfoMessage("An error occurred while logging in.");
+      setInfoState({ errorMessage: "An error occurred while logging in." });
 
       console.error("LoginFormComponent Error: ", error);
     } finally {
       setLoading(false);
+      setModalShow(true);
+
+      navigate("/", { replace: true });
     }
   };
 
@@ -93,16 +89,16 @@ const LogInFormComponent = () => {
             <Form.Text className="text-muted">
               You don't have an account?{" "}
               <Link to="/signup" className="p-0">
-                Sign up
+                Sign up!
               </Link>
             </Form.Text>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicText">
             <Form.Text className="text-muted">
-              Forgot password, a token expired or didn't arrived? Go to the{" "}
+              Forgot your password, a token expired or didn't arrived? Go to the{" "}
               <Link to="/reset-page" className="p-0">
-                reset page
+                reset page.
               </Link>
             </Form.Text>
           </Form.Group>

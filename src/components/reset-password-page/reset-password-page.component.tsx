@@ -13,7 +13,7 @@ interface IToken {
 }
 
 const ResetPasswordPageComponent = () => {
-  const { setModalShow, setInfoMessage, setLoading } = useContext(InfoContext);
+  const { setModalShow, setInfoState, setLoading } = useContext(InfoContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -29,28 +29,23 @@ const ResetPasswordPageComponent = () => {
   };
 
   const handleFormSubmit = async (input: INewPassword) => {
-    setLoading(true);
     try {
+      setLoading(true);
       const token = getToken();
       const response = await fetchNewPassword(token, input);
 
-      if (response.hasOwnProperty("errorMessage")) {
-        setModalShow(true);
-        setInfoMessage(response.errorMessage);
-        return;
-      }
-
-      setModalShow(true);
-      setInfoMessage("New password has been set. Please, log in.");
-
-      navigate("/login");
+      setInfoState(response);
     } catch (error) {
-      setModalShow(true);
-      setInfoMessage("An error occurred while setting a new password.");
+      setInfoState({
+        errorMessage: "An error occurred while setting a new password.",
+      });
 
       console.error("SingUpComponent Error: ", error);
     } finally {
       setLoading(false);
+      setModalShow(true);
+
+      navigate("/login");
     }
   };
 

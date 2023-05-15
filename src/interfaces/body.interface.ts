@@ -1,6 +1,8 @@
 import { IUserModel } from "../models/user.model";
+import { IInfoState } from "./info-state.interface";
 
-export interface IBody extends IUserModel {
-  errorMessage: string;
-  status: "success" | "failure";
+export interface IBody {
+  body: IUserModel;
+  errorMessage: IInfoState["errorMessage"];
+  status: IInfoState["status"];
 }

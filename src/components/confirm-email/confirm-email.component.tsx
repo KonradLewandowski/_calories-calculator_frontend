@@ -8,7 +8,7 @@ interface IToken {
 }
 
 const ConfirmEmailComponent = () => {
-  const { setModalShow, setInfoMessage, setLoading } = useContext(InfoContext);
+  const { setModalShow, setInfoState, setLoading } = useContext(InfoContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,29 +19,23 @@ const ConfirmEmailComponent = () => {
 
   useEffect(() => {
     (async () => {
-      setLoading(true);
       try {
+        setLoading(true);
+
         const token = getToken();
         const response = await fetchConfirmEmail(token);
 
-        if (response.hasOwnProperty("errorMessage")) {
-          setModalShow(true);
-          setInfoMessage(response.errorMessage);
-          return;
-        }
-
-        setModalShow(true);
-        setInfoMessage("Email confirmed! You can log in!");
-
-        navigate("/login");
+        setInfoState(response);
       } catch (error) {
-        setModalShow(true);
-        setInfoMessage("An error occurred while confirming.");
-        console.error("ConfirmEmailComponent Error: ", error);
+        console.log(error);
+        setInfoState({ errorMessage: "An error occurred while confirming." });
 
-        navigate("/");
+        console.error("ConfirmEmailComponent Error: ", error);
       } finally {
         setLoading(false);
+        setModalShow(true);
+
+        navigate("/");
       }
     })();
     // eslint-disable-next-line

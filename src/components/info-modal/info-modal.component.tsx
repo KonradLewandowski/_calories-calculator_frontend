@@ -2,11 +2,17 @@ import { Modal } from "react-bootstrap";
 import { useContext } from "react";
 import InfoContext from "../../contexts/info.context";
 
-// import styles from "./info-modal.module.scss";
+import styles from "./info-modal.module.scss";
 
 const InfoModalComponent = () => {
-  const { infoMessage, setModalShow, modalShow } = useContext(InfoContext);
+  const {
+    infoState: { status = "failure", errorMessage },
+    setModalShow,
+    modalShow,
+  } = useContext(InfoContext);
+
   const handleClose = () => setModalShow(false);
+
   return (
     <Modal
       size="lg"
@@ -16,12 +22,15 @@ const InfoModalComponent = () => {
       show={modalShow}
     >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Something went wrong!
+        <Modal.Title
+          id="contained-modal-title-vcenter"
+          className={`${styles[status]}`}
+        >
+          {status}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>{infoMessage}</p>
+        <p>{errorMessage}</p>
       </Modal.Body>
     </Modal>
   );
