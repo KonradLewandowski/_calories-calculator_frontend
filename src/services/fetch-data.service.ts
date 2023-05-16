@@ -5,7 +5,6 @@ import {
   ISignupUserCredentials,
   INewPassword,
   IUpdateUserData,
-  IUploadUserImage,
 } from "../interfaces/user.interface";
 import { IBody } from "../interfaces/body.interface";
 
