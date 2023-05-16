@@ -1,4 +1,7 @@
+@import "src/asstets/global/_variables";
+
 .klNav {
+  max-width: $desktop-max-width;
   height: 75px;
   &__avatar {
     width: 50px;

@@ -1,8 +1,11 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Container, Form, Row } from "react-bootstrap";
+import { BsTrashFill } from "react-icons/bs";
 import InfoContext from "../../contexts/info.context";
+import UserContext from "../../contexts/user.context";
 import {
+  fetchRemoveUserImage,
   fetchUpdateUserData,
   fetchUploadUserImage,
 } from "../../services/fetch-data.service";
@@ -14,7 +17,12 @@ import {
 import styles from "./edit-data-page.module.scss";
 
 const EditDataPageComponent = () => {
-  const { setModalShow, setInfoState, setLoading } = useContext(InfoContext);
+  const { setInfoState, setModalShow, setLoading } = useContext(InfoContext);
+  const { setUserData, userData } = useContext(UserContext);
+
+  const [imagePreview, setImagePreview] = useState<string | undefined>(
+    userData?.avatar
+  );
 
   const {
     register,
@@ -24,7 +32,7 @@ const EditDataPageComponent = () => {
     formState: { errors, isSubmitting },
   } = useForm<IUpdateUserData & IUploadUserImage>();
 
-  const selectedImage = watch("image") as FileList | undefined;
+  const watchImage = watch("image") as IUploadUserImage["image"] | undefined;
 
   const handleUploadImageFormSubmit = async () => {
     try {
@@ -32,32 +40,14 @@ const EditDataPageComponent = () => {
 
       const formData = new FormData();
 
-      if (selectedImage) {
-        formData.append("image", selectedImage[0]);
+      if (watchImage) {
+        formData.append("image", watchImage[0]);
       }
 
       const response = await fetchUploadUserImage(formData);
 
       setInfoState(response);
-
-      // reset();
-    } catch (error) {
-      setInfoState({ errorMessage: "An error occurred while signing up." });
-
-      console.error("SingUpComponent Error: ", error);
-    } finally {
-      setLoading(false);
-      setModalShow(true);
-    }
-  };
-
-  const handleUserDataFormSubmit = async (input: IUpdateUserData) => {
-    try {
-      setLoading(true);
-
-      const response = await fetchUpdateUserData(input);
-
-      setInfoState(response);
+      setUserData(response.body);
     } catch (error) {
       setInfoState({ errorMessage: "An error occurred while signing up." });
 
@@ -70,18 +60,85 @@ const EditDataPageComponent = () => {
     }
   };
 
+  const handleUserDataFormSubmit = async (input: IUpdateUserData) => {
+    try {
+      setLoading(true);
+
+      const response = await fetchUpdateUserData(input);
+
+      setInfoState(response);
+      setUserData(response.body);
+    } catch (error) {
+      setInfoState({ errorMessage: "An error occurred!" });
+
+      console.error("SingUpComponent Error: ", error);
+    } finally {
+      setLoading(false);
+      setModalShow(true);
+
+      reset();
+    }
+  };
+
+  const handleRemoveUserImage = async () => {
+    try {
+      setLoading(true);
+
+      const response = await fetchRemoveUserImage();
+
+      setInfoState(response);
+      setUserData(response.body);
+    } catch (error) {
+      setInfoState({ errorMessage: "An error occurred!" });
+
+      console.error("SingUpComponent Error: ", error);
+    } finally {
+      setLoading(false);
+      setModalShow(true);
+    }
+  };
+
+  useEffect(() => {
+    setImagePreview(userData?.avatar);
+
+    if (watchImage) {
+      const file = watchImage[0];
+
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+
+      file && reader.readAsDataURL(file);
+    }
+  }, [watchImage, userData]);
+
   return (
-    <Container fluid="sm">
+    <Container fluid="lg">
       <Row
-        className={`d-flex align-items-center justify-content-center ${styles.klRow}`}
+        className={`align-items-center justify-content-center gap-5 ${styles.klRow}`}
       >
         <Form
           id="uploadUserImageForm"
-          className={`${styles.klRow__form} shadow-lg rounded-4 p-4 mb-5`}
+          className={`${styles.klRow__form} shadow-lg rounded-4 p-4`}
           onSubmit={handleSubmit(handleUploadImageFormSubmit)}
         >
           <Form.Group className="mb-3">
             <Form.Label>Upload user image</Form.Label>
+            <div className={`p-4  ${styles.klRow__layout}`}>
+              <img
+                className={` ${styles.klRow__image}`}
+                src={imagePreview}
+                alt={userData?.username}
+              />
+              <BsTrashFill
+                size={32}
+                className={`p-5 ${styles.klRow__icon}`}
+                onClick={handleSubmit(handleRemoveUserImage)}
+              />
+            </div>
+
             <Form.Control
               type="file"
               placeholder="Choose a new image"
@@ -89,15 +146,16 @@ const EditDataPageComponent = () => {
               {...register("image")}
               isInvalid={!!errors.image}
             />
-            {/*<Form.Control.Feedback type="invalid">*/}
-            {/*  {errors.image?.message}*/}
-            {/*</Form.Control.Feedback>*/}
+            <Form.Control.Feedback type="invalid">
+              {errors.image?.message}
+            </Form.Control.Feedback>
           </Form.Group>
+
           <Button
             variant="outline-secondary"
             type="submit"
             form="uploadUserImageForm"
-            disabled={isSubmitting || !selectedImage}
+            disabled={isSubmitting || !watchImage}
           >
             Accept
           </Button>

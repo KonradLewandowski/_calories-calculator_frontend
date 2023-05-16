@@ -148,7 +148,7 @@ export const fetchUpdateUserData = async (
 };
 
 export const fetchUploadUserImage = async (
-  formData: IUploadUserImage
+  formData: FormData
 ): Promise<IBody> => {
   const fetchedData = await fetchData(`${serverUrl}/update-user-image`, {
     method: "POST",
@@ -157,6 +157,18 @@ export const fetchUploadUserImage = async (
     },
     credentials: "include",
     body: formData,
+  });
+
+  return fetchedData.json();
+};
+
+export const fetchRemoveUserImage = async (): Promise<IBody> => {
+  const fetchedData = await fetchData(`${serverUrl}/delete-user-image`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
   });
 
   return fetchedData.json();

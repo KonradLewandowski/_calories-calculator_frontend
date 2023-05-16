@@ -44,14 +44,14 @@ const LogInFormComponent = () => {
   };
 
   return (
-    <Container fluid="sm">
+    <Container fluid="lg">
       <Row
-        className={`d-flex align-items-center justify-content-center ${styles.klRow}`}
+        className={` align-items-center justify-content-center ${styles.klRow} `}
       >
         <Form
           id="loginForm"
           onSubmit={handleSubmit(handleFormSubmit)}
-          className={`${styles.klRow__loginForm} shadow-lg rounded-4 p-4`}
+          className={`${styles.klRow__form} shadow-lg rounded-4 p-4`}
         >
           <Form.Group className="mb-3">
             <Form.Label>Login</Form.Label>

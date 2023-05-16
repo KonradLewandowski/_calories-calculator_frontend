@@ -90,7 +90,7 @@ const ResetPageComponent = () => {
       >
         <Form
           id="resetForm"
-          className={`${styles.klRow__resendForm} shadow-lg rounded-4 p-4`}
+          className={`${styles.klRow__form} shadow-lg rounded-4 p-4`}
           onSubmit={handleSubmit(handleFormSubmit)}
         >
           <Form.Group className="mb-3">

@@ -62,7 +62,14 @@ const NavigationComponent = () => {
       )}
 
       <nav className={`bg-secondary bg-gradient`}>
-        <Nav className={`${styles.klNav} p-2 justify-content-end container `}>
+        <Nav
+          className={`${styles.klNav} px-5 justify-content-between container mx-auto gap-5 `}
+        >
+          <Nav.Item
+            className={`${styles.klNav__links} d-flex align-items-center gap-2 text-light`}
+          >
+            Hi {userData?.username} !
+          </Nav.Item>
           <ErrorModalComponent />
           {userData ? (
             <Nav.Item

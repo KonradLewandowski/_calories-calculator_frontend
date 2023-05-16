@@ -57,7 +57,7 @@ const ResetPasswordPageComponent = () => {
         <Form
           id="resetPasswordForm"
           onSubmit={handleSubmit(handleFormSubmit)}
-          className={`${styles.klRow__resetPasswordForm} shadow-lg rounded-4 p-4`}
+          className={`${styles.klRow__form} shadow-lg rounded-4 p-4`}
         >
           <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>

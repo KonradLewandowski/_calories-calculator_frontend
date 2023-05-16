@@ -1,0 +1,5 @@
+@import "variables";
+
+@mixin default-max-width {
+  max-width: $default-width;
+}

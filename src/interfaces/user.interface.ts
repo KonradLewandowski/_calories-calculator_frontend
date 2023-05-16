@@ -30,6 +30,6 @@ export interface IUpdateUserData {
   confirmNewPassword?: string;
 }
 
-export interface IUploadUserImage extends FormData {
-  image?: File;
+export interface IUploadUserImage {
+  image?: FileList;
 }
