@@ -41,6 +41,8 @@ const NavigationComponent = () => {
 
       setInfoState(response);
       setUserData(null);
+
+      navigate("/");
     } catch (error) {
       setInfoState({ errorMessage: "An error occurred while logging out." });
 
@@ -48,8 +50,6 @@ const NavigationComponent = () => {
     } finally {
       setLoading(false);
       setModalShow(true);
-
-      navigate("/");
     }
   };
 

@@ -4,6 +4,8 @@ import {
   ILoginUserCredentials,
   ISignupUserCredentials,
   INewPassword,
+  IUpdateUserData,
+  IUploadUserImage,
 } from "../interfaces/user.interface";
 import { IBody } from "../interfaces/body.interface";
 
@@ -125,6 +127,36 @@ export const fetchNewPassword = async (
     },
     credentials: "include",
     body: JSON.stringify(bodyData),
+  });
+
+  return fetchedData.json();
+};
+
+export const fetchUpdateUserData = async (
+  bodyData: IUpdateUserData
+): Promise<IBody> => {
+  const fetchedData = await fetchData(`${serverUrl}/update-user-data`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(bodyData),
+  });
+
+  return fetchedData.json();
+};
+
+export const fetchUploadUserImage = async (
+  formData: IUploadUserImage
+): Promise<IBody> => {
+  const fetchedData = await fetchData(`${serverUrl}/update-user-image`, {
+    method: "POST",
+    headers: {
+      multipart: "form-data",
+    },
+    credentials: "include",
+    body: formData,
   });
 
   return fetchedData.json();

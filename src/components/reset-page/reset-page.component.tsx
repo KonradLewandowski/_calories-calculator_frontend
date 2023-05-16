@@ -63,6 +63,8 @@ const ResetPageComponent = () => {
       const response = await fetchResetPassword(input);
 
       setInfoState(response);
+
+      navigate("/");
     } catch (error) {
       setInfoState({
         errorMessage: "An error occurred while resetting password.",
@@ -72,8 +74,6 @@ const ResetPageComponent = () => {
     } finally {
       setLoading(false);
       setModalShow(true);
-
-      navigate("/login");
     }
   };
 
@@ -93,7 +93,7 @@ const ResetPageComponent = () => {
           className={`${styles.klRow__resendForm} shadow-lg rounded-4 p-4`}
           onSubmit={handleSubmit(handleFormSubmit)}
         >
-          <Form.Group className="mb-3" controlId="formBasicLogin">
+          <Form.Group className="mb-3">
             <Form.Label>Email address</Form.Label>
             <Form.Control
               type="text"

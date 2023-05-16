@@ -17,6 +17,7 @@ const LogInFormComponent = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<ILoginUserCredentials>();
 
@@ -28,6 +29,8 @@ const LogInFormComponent = () => {
 
       setInfoState(response);
       setUserData(response.body);
+
+      navigate("/", { replace: true });
     } catch (error) {
       setInfoState({ errorMessage: "An error occurred while logging in." });
 
@@ -36,7 +39,7 @@ const LogInFormComponent = () => {
       setLoading(false);
       setModalShow(true);
 
-      navigate("/", { replace: true });
+      reset();
     }
   };
 
@@ -50,7 +53,7 @@ const LogInFormComponent = () => {
           onSubmit={handleSubmit(handleFormSubmit)}
           className={`${styles.klRow__loginForm} shadow-lg rounded-4 p-4`}
         >
-          <Form.Group className="mb-3" controlId="formBasicLogin">
+          <Form.Group className="mb-3">
             <Form.Label>Login</Form.Label>
             <Form.Control
               type="text"
@@ -62,7 +65,7 @@ const LogInFormComponent = () => {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
@@ -85,7 +88,7 @@ const LogInFormComponent = () => {
             Log in
           </Button>
 
-          <Form.Group className="mb-3" controlId="formBasicText">
+          <Form.Group className="mb-3">
             <Form.Text className="text-muted">
               You don't have an account?{" "}
               <Link to="/signup" className="p-0">
@@ -94,7 +97,7 @@ const LogInFormComponent = () => {
             </Form.Text>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicText">
+          <Form.Group className="mb-3">
             <Form.Text className="text-muted">
               Forgot your password, a token expired or didn't arrived? Go to the{" "}
               <Link to="/reset-page" className="p-0">

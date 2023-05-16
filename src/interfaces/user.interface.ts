@@ -22,3 +22,14 @@ export interface INewPassword {
   password?: string;
   confirmPassword?: string;
 }
+
+export interface IUpdateUserData {
+  username?: string;
+  oldPassword?: string;
+  newPassword?: string;
+  confirmNewPassword?: string;
+}
+
+export interface IUploadUserImage extends FormData {
+  image?: File;
+}

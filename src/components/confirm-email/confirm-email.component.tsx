@@ -35,7 +35,7 @@ const ConfirmEmailComponent = () => {
         setLoading(false);
         setModalShow(true);
 
-        navigate("/");
+        navigate("/login");
       }
     })();
     // eslint-disable-next-line

@@ -35,6 +35,8 @@ const ResetPasswordPageComponent = () => {
       const response = await fetchNewPassword(token, input);
 
       setInfoState(response);
+
+      navigate("/login");
     } catch (error) {
       setInfoState({
         errorMessage: "An error occurred while setting a new password.",
@@ -44,8 +46,6 @@ const ResetPasswordPageComponent = () => {
     } finally {
       setLoading(false);
       setModalShow(true);
-
-      navigate("/login");
     }
   };
 
@@ -59,7 +59,7 @@ const ResetPasswordPageComponent = () => {
           onSubmit={handleSubmit(handleFormSubmit)}
           className={`${styles.klRow__resetPasswordForm} shadow-lg rounded-4 p-4`}
         >
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
@@ -72,7 +72,7 @@ const ResetPasswordPageComponent = () => {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3">
             <Form.Label>Confirm password</Form.Label>
             <Form.Control
               type="password"

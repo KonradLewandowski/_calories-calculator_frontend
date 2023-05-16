@@ -25,6 +25,8 @@ const SignupFormComponent = () => {
       const response = await fetchSignupUser(input);
 
       setInfoState(response);
+
+      navigate("/login");
     } catch (error) {
       setInfoState({ errorMessage: "An error occurred while signing up." });
 
@@ -32,8 +34,6 @@ const SignupFormComponent = () => {
     } finally {
       setLoading(false);
       setModalShow(true);
-
-      navigate("/login");
     }
   };
 
@@ -47,7 +47,7 @@ const SignupFormComponent = () => {
           onSubmit={handleSubmit(handleFormSubmit)}
           className={`${styles.klRow__signupForm} shadow-lg rounded-4 p-4`}
         >
-          <Form.Group className="mb-3" controlId="formBasicLogin">
+          <Form.Group className="mb-3">
             <Form.Label>Username</Form.Label>
             <Form.Control
               type="text"
@@ -59,7 +59,7 @@ const SignupFormComponent = () => {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicLogin">
+          <Form.Group className="mb-3">
             <Form.Label>Email address</Form.Label>
             <Form.Control
               type="text"
@@ -71,7 +71,7 @@ const SignupFormComponent = () => {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
@@ -84,7 +84,7 @@ const SignupFormComponent = () => {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3">
             <Form.Label>Confirm password</Form.Label>
             <Form.Control
               type="password"
