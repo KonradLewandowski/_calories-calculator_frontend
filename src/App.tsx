@@ -21,7 +21,7 @@ function App() {
       <ErrorProvider>
         <UserProvider>
           <NavigationComponent />
-          <main className="p-4">
+          <main className="py-4 min-vh-100">
             <Routes>
               <Route path="/" element={<LandingPageComponent />} />
               <Route path="/signup" element={<SignupFormComponent />} />

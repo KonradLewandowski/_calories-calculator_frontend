@@ -1,8 +1,12 @@
 import { Modal } from "react-bootstrap";
 import { useContext } from "react";
+
+import { BiErrorCircle } from "react-icons/bi";
+import { MdDoneOutline } from "react-icons/md";
+
 import InfoContext from "../../contexts/info.context";
 
-import styles from "./info-modal.module.scss";
+// import styles from "./info-modal.module.scss";
 
 const InfoModalComponent = () => {
   const {
@@ -22,11 +26,12 @@ const InfoModalComponent = () => {
       show={modalShow}
     >
       <Modal.Header closeButton>
-        <Modal.Title
-          id="contained-modal-title-vcenter"
-          className={`${styles[status]}`}
-        >
-          {status}
+        <Modal.Title id="contained-modal-title-vcenter">
+          {status === "failure" ? (
+            <BiErrorCircle color="red" size={64} />
+          ) : (
+            <MdDoneOutline color="darkgreen" size={64} />
+          )}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

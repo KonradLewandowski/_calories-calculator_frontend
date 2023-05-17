@@ -1,0 +1,26 @@
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes color-change {
+  0% {
+    fill: #ffffff;
+  }
+  25% {
+    fill: #fa005b;
+  }
+  50% {
+    fill: #d53afe;
+  }
+  75% {
+    fill: #01b9f1;
+  }
+  100% {
+    fill: #06f1e6;
+  }
+}

@@ -1,5 +1,61 @@
 @import "variables";
+@import "animations";
+
+@mixin cover-layout {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+// widths
+@mixin container-bg-max-width {
+  max-width: map-get($widths, "1110");
+}
+
+@mixin container-medium-max-width {
+  max-width: map-get($widths, "768");
+}
 
 @mixin default-max-width {
-  max-width: $default-width;
+  max-width: map-get($widths, "300");
+}
+
+// margins
+@mixin small-margin-right {
+  margin-right: map-get($spacings, "8");
+}
+@mixin small-margin-bottom {
+  margin-bottom: map-get($spacings, "8");
+}
+@mixin big-margin-bottom {
+  margin-bottom: map-get($spacings, "32");
+}
+@mixin navigation-margin-desktop {
+  margin-top: map-get($spacings, "112");
+}
+@mixin navigation-margin-mobile {
+  margin-top: map-get($spacings, "160");
+}
+
+// animations
+@mixin rotate-animation {
+  animation: rotate map-get($durations, "default") linear infinite;
+}
+@mixin color-change-animation {
+  animation: color-change map-get($durations, "slow") infinite alternate;
+}
+
+// media queries
+@mixin tablet-small {
+  @media (max-width: map-get($widths, "768") - 1px) {
+    @content;
+  }
+}
+
+@mixin mobile-small {
+  @media (max-width: map-get($widths, "480") - 1px) {
+    @content;
+  }
 }

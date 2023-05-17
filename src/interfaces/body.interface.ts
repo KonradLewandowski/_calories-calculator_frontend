@@ -6,3 +6,9 @@ export interface IBody {
   errorMessage: IInfoState["errorMessage"];
   status: IInfoState["status"];
 }
+
+export interface IBodyAllUsers {
+  body: IUserModel[];
+  errorMessage: IInfoState["errorMessage"];
+  status: IInfoState["status"];
+}

@@ -1,7 +1,28 @@
 // widths
-$default-width: 300px;
-$desktop-max-width: 1110px;
+$widths: (
+  "1110": 1110px,
+  "768": 768px,
+  "480": 480px,
+  "360": 360px,
+  "300": 300px,
+);
 
-// colors
-$alarm-color: darkred;
-$success-color: darkgreen;
+// spacings
+$spacings: (
+  "8": 8px,
+  "12": 12px,
+  "16": 16px,
+  "24": 24px,
+  "32": 32px,
+  "96": 96px,
+  "112": 112px,
+  "160": 160px,
+);
+
+// durations
+$durations: (
+  "fast": 2s,
+  "default": 3s,
+  "normal": 4s,
+  "slow": 6s,
+);

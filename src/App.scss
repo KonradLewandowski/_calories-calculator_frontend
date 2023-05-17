@@ -1,3 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Vollkorn+SC&display=swap");
+@import "src/asstets/global/_mixins.scss";
+
+* {
+  font-family: "Vollkorn SC", serif;
+}
+
 a {
   color: currentColor;
   text-decoration: none;
@@ -6,4 +13,16 @@ a {
     text-decoration: underline;
     color: currentColor;
   }
+}
+
+main {
+  @include navigation-margin-desktop;
+  @include mobile-small {
+    @include navigation-margin-mobile;
+  }
+}
+
+ul {
+  padding: 0;
+  list-style: none;
 }

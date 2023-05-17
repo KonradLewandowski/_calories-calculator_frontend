@@ -1,0 +1,5 @@
+@import "src/asstets/global/_mixins";
+
+.klSection {
+  @include container-medium-max-width;
+}

@@ -128,7 +128,7 @@ const EditDataPageComponent = () => {
             <Form.Label>Upload user image</Form.Label>
             <div className={`p-4  ${styles.klRow__layout}`}>
               <img
-                className={` ${styles.klRow__image}`}
+                className={`w-100`}
                 src={imagePreview}
                 alt={userData?.username}
               />

@@ -6,7 +6,7 @@ import {
   INewPassword,
   IUpdateUserData,
 } from "../interfaces/user.interface";
-import { IBody } from "../interfaces/body.interface";
+import { IBody, IBodyAllUsers } from "../interfaces/body.interface";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -14,7 +14,7 @@ const fetchData = async (input: RequestInfo, init?: RequestInit) => {
   return await fetch(input, init);
 };
 
-export const fetchUsers = async (): Promise<IBody[]> => {
+export const fetchUsers = async (): Promise<IBodyAllUsers> => {
   const fetchedData = await fetchData(`${serverUrl}/all`, { method: "GET" });
   return fetchedData.json();
 };

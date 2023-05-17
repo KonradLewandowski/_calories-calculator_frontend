@@ -2,9 +2,7 @@
 
 const FooterComponent = () => {
   return (
-    <footer className={`bg-light py-3 fixed-bottom`}>
-      this is my footer component
-    </footer>
+    <footer className={`bg-light py-3 `}>this is my footer component</footer>
   );
 };
 

@@ -1,0 +1,30 @@
+@import "src/asstets/global/_mixins";
+
+.klRow {
+  &__introduce {
+    font-size: 24px;
+    @include big-margin-bottom;
+  }
+
+  &__column {
+    min-width: 300px;
+  }
+
+  svg {
+    @include small-margin-right;
+    font-size: 24px;
+  }
+
+  li {
+    @include small-margin-bottom;
+  }
+
+  &__react {
+    @include rotate-animation;
+  }
+
+  &__jwt {
+    background: black;
+    @include color-change-animation;
+  }
+}

@@ -1,6 +1,8 @@
 import { Nav, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
+import { AiOutlineHome } from "react-icons/ai";
+import { SiMongodb, SiReact, SiExpress, SiNodedotjs } from "react-icons/si";
 import UserContext from "../../contexts/user.context";
 import InfoContext from "../../contexts/info.context";
 import ErrorModalComponent from ".././info-modal/info-modal.component";
@@ -56,24 +58,45 @@ const NavigationComponent = () => {
   return (
     <>
       {loading && (
-        <div className={`${styles.klLayout}`}>
+        <div
+          className={`d-flex flex-wrap justify-content-center align-items-center position-absolute w-100 h-100`}
+        >
           <Spinner className="spinner-grow" animation="border" role="status" />
         </div>
       )}
 
-      <nav className={`bg-secondary bg-gradient`}>
+      <nav className={`bg-secondary px-2 py-4 fixed-top w-100`}>
         <Nav
-          className={`${styles.klNav} px-5 justify-content-between container mx-auto gap-5 `}
+          className={`${styles.klNav} justify-content-between container mx-auto gap-2 p-0 `}
         >
-          <Nav.Item
-            className={`${styles.klNav__links} d-flex align-items-center gap-2 text-light`}
-          >
-            Hi {userData?.username} !
-          </Nav.Item>
           <ErrorModalComponent />
+
+          <Nav.Item
+            className={`${styles.klNav__links} d-flex align-items-center gap-2 text-light `}
+          >
+            <SiMongodb />
+            <SiExpress />
+            <SiReact />
+            <SiNodedotjs />
+          </Nav.Item>
+
+          <Nav.Item
+            className={` d-flex align-items-center justify-content-center gap-2 text-light  flex-column`}
+          >
+            <Link to="/">
+              <AiOutlineHome size={32} />
+            </Link>
+
+            {userData &&
+              `Hi ${
+                userData.username.charAt(0).toUpperCase() +
+                userData.username.slice(1)
+              }`}
+          </Nav.Item>
+
           {userData ? (
             <Nav.Item
-              className={`${styles.klNav__links} d-flex align-items-center gap-2 text-light`}
+              className={`d-flex align-items-center  gap-2 text-light `}
             >
               <Link to="/" onClick={handleLogOut}>
                 Log out
