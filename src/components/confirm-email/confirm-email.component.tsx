@@ -28,7 +28,9 @@ const ConfirmEmailComponent = () => {
         setInfoState(response);
       } catch (error) {
         console.log(error);
-        setInfoState({ errorMessage: "An error occurred while confirming." });
+        setInfoState({
+          infoMessage: "An error occurred while confirming the email!",
+        });
 
         console.error("ConfirmEmailComponent Error: ", error);
       } finally {

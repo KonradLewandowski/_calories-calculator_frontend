@@ -20,7 +20,7 @@ const UserPageComponent = () => {
         setUsers(response.body);
       } catch (error) {
         setInfoState({
-          errorMessage: "An error occurred while resetting password.",
+          infoMessage: "An error occurred while getting the users!",
         });
 
         console.error("LoginFormComponent Error: ", error);
@@ -68,12 +68,12 @@ const UserPageComponent = () => {
               <Carousel.Item key={index} className={`text-center`}>
                 <div className={`px-4 pb-5 `}>
                   <img
-                    className={`${styles.klCarousel__image} w-100 rounded-4 shadow `}
+                    className={`${styles.klCarousel__image} img-fluid rounded-4 shadow px-3`}
                     src={user.avatar}
                     alt={`Slide ${index + 1}`}
                   />
                 </div>
-                <Carousel.Caption className="d-flex gap-1 justify-content-center">
+                <Carousel.Caption className="d-flex gap-1 justify-content-center mb-4">
                   <h3
                     className={`${styles.klCarousel__username} text-truncate`}
                   >
@@ -82,13 +82,12 @@ const UserPageComponent = () => {
                   </h3>
                   <span>
                     {user.verified ? (
-                      <VscVerified size={24} color="darkgreen" />
+                      <VscVerified size={24} color="yellowgreen" />
                     ) : (
-                      <VscUnverified size={24} color="darkred" />
+                      <VscUnverified size={24} color="red" />
                     )}
                   </span>
                 </Carousel.Caption>
-                {/*<p>{user.verified}</p>*/}
               </Carousel.Item>
             ))}
           </Carousel>

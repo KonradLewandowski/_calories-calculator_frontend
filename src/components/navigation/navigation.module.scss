@@ -11,10 +11,21 @@
     svg {
       font-size: 24px;
     }
+  }
+
+  &__mern {
     @include mobile-small {
       width: 100%;
       padding-bottom: 1em;
       justify-content: center;
     }
+  }
+
+  &__react {
+    @include rotate-animation;
+  }
+
+  &__home:hover {
+    @include color-change-animation;
   }
 }

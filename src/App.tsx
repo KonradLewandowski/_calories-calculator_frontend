@@ -12,6 +12,7 @@ import ConfirmEmailComponent from "./components/confirm-email/confirm-email.comp
 import LogInFormComponent from "./components/login-form/login-form.component";
 import ResetPageComponent from "./components/reset-page/reset-page.component";
 import ResetPasswordPageComponent from "./components/reset-password-page/reset-password-page.component";
+import NotFoundPageComponent from "./components/not-found-page/not-found-page.component";
 
 import "./App.scss";
 
@@ -21,7 +22,7 @@ function App() {
       <ErrorProvider>
         <UserProvider>
           <NavigationComponent />
-          <main className="py-4 min-vh-100">
+          <main className="py-4 min-vh-100 d-flex">
             <Routes>
               <Route path="/" element={<LandingPageComponent />} />
               <Route path="/signup" element={<SignupFormComponent />} />
@@ -35,7 +36,8 @@ function App() {
                 path="/reset-password"
                 element={<ResetPasswordPageComponent />}
               />
-              <Route path="edit-data" element={<EditDataPageComponent />} />
+              <Route path="/edit-data" element={<EditDataPageComponent />} />
+              <Route path="/*" element={<NotFoundPageComponent />} />
             </Routes>
           </main>
           <FooterComponent />

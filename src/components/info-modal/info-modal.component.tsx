@@ -10,7 +10,7 @@ import InfoContext from "../../contexts/info.context";
 
 const InfoModalComponent = () => {
   const {
-    infoState: { status = "failure", errorMessage },
+    infoState: { status, infoMessage },
     setModalShow,
     modalShow,
   } = useContext(InfoContext);
@@ -24,10 +24,11 @@ const InfoModalComponent = () => {
       centered
       onHide={handleClose}
       show={modalShow}
+      className="p-0"
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          {status === "failure" ? (
+          {!status ? (
             <BiErrorCircle color="red" size={64} />
           ) : (
             <MdDoneOutline color="darkgreen" size={64} />
@@ -35,7 +36,7 @@ const InfoModalComponent = () => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>{errorMessage}</p>
+        <p>{infoMessage}</p>
       </Modal.Body>
     </Modal>
   );

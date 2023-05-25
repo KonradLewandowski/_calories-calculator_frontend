@@ -5,11 +5,11 @@ import { AiOutlineHome } from "react-icons/ai";
 import { SiMongodb, SiReact, SiExpress, SiNodedotjs } from "react-icons/si";
 import UserContext from "../../contexts/user.context";
 import InfoContext from "../../contexts/info.context";
-import ErrorModalComponent from ".././info-modal/info-modal.component";
 import {
   fetchLoggedUser,
   fetchLogOut,
 } from "../../services/fetch-data.service";
+import InfoModalComponent from "../info-modal/info-modal.component";
 
 import styles from "./navigation.module.scss";
 
@@ -26,7 +26,7 @@ const NavigationComponent = () => {
 
         setUserData(body);
       } catch (error) {
-        setInfoState({ errorMessage: "An error occurred while logging in." });
+        setInfoState({ infoMessage: "An error occurred!" });
         setModalShow(true);
 
         console.error("NavigationComponent ERROR: ", error);
@@ -46,7 +46,7 @@ const NavigationComponent = () => {
 
       navigate("/");
     } catch (error) {
-      setInfoState({ errorMessage: "An error occurred while logging out." });
+      setInfoState({ infoMessage: "An error occurred while logging out." });
 
       console.error("handleLogOut ERROR: ", error);
     } finally {
@@ -65,18 +65,16 @@ const NavigationComponent = () => {
         </div>
       )}
 
-      <nav className={`bg-secondary px-2 py-4 fixed-top w-100`}>
+      <nav className={`bg-secondary px-3 py-4 fixed-top w-100`}>
         <Nav
           className={`${styles.klNav} justify-content-between container mx-auto gap-2 p-0 `}
         >
-          <ErrorModalComponent />
-
           <Nav.Item
-            className={`${styles.klNav__links} d-flex align-items-center gap-2 text-light `}
+            className={`${styles.klNav__links} ${styles.klNav__mern} d-flex align-items-center gap-2 text-light `}
           >
             <SiMongodb />
             <SiExpress />
-            <SiReact />
+            <SiReact className={`${styles.klNav__react}`} />
             <SiNodedotjs />
           </Nav.Item>
 
@@ -84,7 +82,7 @@ const NavigationComponent = () => {
             className={` d-flex align-items-center justify-content-center gap-2 text-light  flex-column`}
           >
             <Link to="/">
-              <AiOutlineHome size={32} />
+              <AiOutlineHome className={`${styles.klNav__home}`} size={32} />
             </Link>
 
             {userData &&
@@ -119,6 +117,7 @@ const NavigationComponent = () => {
           )}
         </Nav>
       </nav>
+      <InfoModalComponent />
     </>
   );
 };

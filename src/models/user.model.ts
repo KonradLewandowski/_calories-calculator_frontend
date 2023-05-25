@@ -5,4 +5,6 @@ export interface IUserModel {
   password: string;
   avatar: string;
   verified?: boolean;
+
+  save?: () => {};
 }

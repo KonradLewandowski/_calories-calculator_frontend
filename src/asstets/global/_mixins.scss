@@ -9,6 +9,12 @@
   top: 0;
 }
 
+@mixin image-container-default {
+  width: map-get($widths, "300");
+  height: map-get($widths, "300");
+  object-fit: contain;
+}
+
 // widths
 @mixin container-bg-max-width {
   max-width: map-get($widths, "1110");
@@ -16,6 +22,10 @@
 
 @mixin container-medium-max-width {
   max-width: map-get($widths, "768");
+}
+
+@mixin container-lower-medium-max-width {
+  max-width: map-get($widths, "340");
 }
 
 @mixin default-max-width {

@@ -1,0 +1,8 @@
+@import "src/asstets/global/_mixins";
+
+.klNav {
+  &__items svg:hover {
+    transition: color 0.5s ease;
+    color: yellowgreen;
+  }
+}

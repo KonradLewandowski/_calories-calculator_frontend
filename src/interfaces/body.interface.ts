@@ -3,12 +3,12 @@ import { IInfoState } from "./info-state.interface";
 
 export interface IBody {
   body: IUserModel;
-  errorMessage: IInfoState["errorMessage"];
+  infoMessage: IInfoState["infoMessage"];
   status: IInfoState["status"];
 }
 
 export interface IBodyAllUsers {
   body: IUserModel[];
-  errorMessage: IInfoState["errorMessage"];
+  infoMessage: IInfoState["infoMessage"];
   status: IInfoState["status"];
 }

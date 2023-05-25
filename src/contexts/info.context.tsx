@@ -1,10 +1,6 @@
 import { createContext, useState } from "react";
 import { IInfoState } from "../interfaces/info-state.interface";
 
-// interface IInfoState {
-//   errorMessage: string;
-//   status: "success" | "failure";
-// }
 interface IValueProviderError {
   modalShow: boolean;
   setModalShow: (data: boolean) => void;
@@ -17,7 +13,7 @@ interface IValueProviderError {
 const InfoContext = createContext<IValueProviderError>({
   modalShow: false,
   setModalShow: () => {},
-  infoState: { errorMessage: "", status: "failure" },
+  infoState: { infoMessage: "", status: false },
   setInfoState: () => {},
   loading: false,
   setLoading: () => {},
@@ -26,8 +22,8 @@ const InfoContext = createContext<IValueProviderError>({
 export const ErrorProvider: TProvider = ({ children }) => {
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [infoState, setInfoState] = useState<IInfoState>({
-    errorMessage: "",
-    status: "failure",
+    infoMessage: "",
+    status: false,
   });
   const [loading, setLoading] = useState<boolean>(false);
 

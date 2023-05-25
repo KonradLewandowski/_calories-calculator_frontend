@@ -4,4 +4,7 @@
   &__form {
     @include default-max-width;
   }
+  a {
+    color: yellowgreen;
+  }
 }

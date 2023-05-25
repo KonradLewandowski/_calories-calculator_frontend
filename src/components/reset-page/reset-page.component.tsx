@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
   Button,
@@ -15,6 +14,7 @@ import {
 } from "../../services/fetch-data.service";
 import { IEmailCredentials } from "../../interfaces/user.interface";
 import InfoContext from "../../contexts/info.context";
+import UserContext from "../../contexts/user.context";
 
 import styles from "./reset-page.module.scss";
 
@@ -24,14 +24,15 @@ enum ISubmitType {
 }
 const ResetPageComponent = () => {
   const { setModalShow, setInfoState, setLoading } = useContext(InfoContext);
+  const { userData } = useContext(UserContext);
   const [submitType, setSubmitType] = useState<ISubmitType>(
     ISubmitType.Password
   );
-  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<IEmailCredentials>();
 
@@ -43,10 +44,10 @@ const ResetPageComponent = () => {
 
       setInfoState(response);
 
-      navigate("/login");
+      response.status && reset({ email: "" });
     } catch (error) {
       setInfoState({
-        errorMessage: "An error occurred while resending the token.",
+        infoMessage: "An error occurred while resending the token.",
       });
 
       console.error("LoginFormComponent Error: ", error);
@@ -64,10 +65,10 @@ const ResetPageComponent = () => {
 
       setInfoState(response);
 
-      navigate("/");
+      response.status && reset({ email: "" });
     } catch (error) {
       setInfoState({
-        errorMessage: "An error occurred while resetting password.",
+        infoMessage: "An error occurred while resetting password.",
       });
 
       console.error("LoginFormComponent Error: ", error);
@@ -96,9 +97,11 @@ const ResetPageComponent = () => {
           <Form.Group className="mb-3">
             <Form.Label>Email address</Form.Label>
             <Form.Control
-              type="text"
+              type="email"
               placeholder="Enter email address"
+              isInvalid={!!errors.email}
               {...register("email", { required: "Required" })}
+              disabled={!!userData?.username}
             />
             <Form.Control.Feedback type="invalid">
               {errors.email?.message}
@@ -134,7 +137,7 @@ const ResetPageComponent = () => {
               variant="outline-secondary"
               type="submit"
               form="resetForm"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !!userData?.username}
             >
               Send
             </Button>

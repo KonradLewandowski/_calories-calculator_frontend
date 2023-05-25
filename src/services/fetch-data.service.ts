@@ -149,7 +149,7 @@ export const fetchUpdateUserData = async (
 export const fetchUploadUserImage = async (
   formData: FormData
 ): Promise<IBody> => {
-  const fetchedData = await fetchData(`${serverUrl}/update-user-image`, {
+  const fetchedData = await fetchData(`${serverUrl}/upload-image`, {
     method: "POST",
     headers: {
       multipart: "form-data",
@@ -163,7 +163,7 @@ export const fetchUploadUserImage = async (
 
 export const fetchRemoveUserImage = async (): Promise<IBody> => {
   const fetchedData = await fetchData(`${serverUrl}/delete-user-image`, {
-    method: "DELETE",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },

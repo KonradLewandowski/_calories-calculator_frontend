@@ -1,8 +1,8 @@
 @import "src/asstets/global/_mixins";
 
 .klCarousel {
-  max-width: 340px;
   &__image {
+    @include image-container-default;
   }
 
   &__username {

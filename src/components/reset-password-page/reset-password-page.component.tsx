@@ -5,6 +5,7 @@ import { Button, Container, Form, Row } from "react-bootstrap";
 import { INewPassword } from "../../interfaces/user.interface";
 import { fetchNewPassword } from "../../services/fetch-data.service";
 import InfoContext from "../../contexts/info.context";
+import UserContext from "../../contexts/user.context";
 
 import styles from "./reset-password-page.module.scss";
 
@@ -14,6 +15,7 @@ interface IToken {
 
 const ResetPasswordPageComponent = () => {
   const { setModalShow, setInfoState, setLoading } = useContext(InfoContext);
+  const { userData } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -36,10 +38,10 @@ const ResetPasswordPageComponent = () => {
 
       setInfoState(response);
 
-      navigate("/login");
+      response.status && navigate("/login");
     } catch (error) {
       setInfoState({
-        errorMessage: "An error occurred while setting a new password.",
+        infoMessage: "An error occurred while setting the new password.",
       });
 
       console.error("SingUpComponent Error: ", error);
@@ -66,6 +68,7 @@ const ResetPasswordPageComponent = () => {
               placeholder="Enter new password"
               isInvalid={!!errors.password}
               {...register("password", { required: "Required" })}
+              disabled={!!userData?.username}
             />
             <Form.Control.Feedback type="invalid">
               {errors.password?.message}
@@ -79,6 +82,7 @@ const ResetPasswordPageComponent = () => {
               placeholder="Enter new password again"
               isInvalid={!!errors.confirmPassword}
               {...register("confirmPassword", { required: "Required" })}
+              disabled={!!userData?.username}
             />
             <Form.Control.Feedback type="invalid">
               {errors.confirmPassword?.message}
@@ -90,7 +94,7 @@ const ResetPasswordPageComponent = () => {
             variant="outline-secondary"
             type="submit"
             form="resetPasswordForm"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !!userData?.username}
           >
             Confirm
           </Button>

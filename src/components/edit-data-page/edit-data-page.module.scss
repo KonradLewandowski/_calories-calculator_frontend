@@ -5,15 +5,23 @@
   &__form {
     @include default-max-width;
   }
+  &__image {
+    @include image-container-default;
+  }
 
   &__layout {
     position: relative;
   }
 
+  &__button {
+    @include cover-layout;
+    background: transparent;
+  }
+
   &__icon {
     @include cover-layout;
     opacity: 0;
-    transition: opacity 0.5s;
+    transition: opacity 0.5s, fill 0.3s;
     &:hover {
       opacity: 1;
       fill: darkred;

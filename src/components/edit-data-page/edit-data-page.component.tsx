@@ -13,6 +13,7 @@ import {
   IUpdateUserData,
   IUploadUserImage,
 } from "../../interfaces/user.interface";
+import ConfirmModalComponent from "../confirm-modal/confirm-modal.component";
 
 import styles from "./edit-data-page.module.scss";
 
@@ -23,6 +24,7 @@ const EditDataPageComponent = () => {
   const [imagePreview, setImagePreview] = useState<string | undefined>(
     userData?.avatar
   );
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   const {
     register,
@@ -47,11 +49,13 @@ const EditDataPageComponent = () => {
       const response = await fetchUploadUserImage(formData);
 
       setInfoState(response);
-      setUserData(response.body);
+      response.status && setUserData(response.body);
     } catch (error) {
-      setInfoState({ errorMessage: "An error occurred while signing up." });
+      setInfoState({
+        infoMessage: "An error occurred while updating the image!",
+      });
 
-      console.error("SingUpComponent Error: ", error);
+      console.error("EditDataPageComponent Error: ", error);
     } finally {
       setLoading(false);
       setModalShow(true);
@@ -67,17 +71,25 @@ const EditDataPageComponent = () => {
       const response = await fetchUpdateUserData(input);
 
       setInfoState(response);
-      setUserData(response.body);
+      response.status && setUserData(response.body);
     } catch (error) {
-      setInfoState({ errorMessage: "An error occurred!" });
+      setInfoState({ infoMessage: "An error occurred while submitting!" });
 
-      console.error("SingUpComponent Error: ", error);
+      console.error("EditDataPageComponent Error: ", error);
     } finally {
       setLoading(false);
       setModalShow(true);
 
-      reset();
+      reset({ oldPassword: "", newPassword: "", confirmNewPassword: "" });
     }
+  };
+
+  const openConfirmationModal = () => {
+    setShowConfirmationModal(true);
+  };
+
+  const closeConfirmationModal = () => {
+    setShowConfirmationModal(false);
   };
 
   const handleRemoveUserImage = async () => {
@@ -87,12 +99,15 @@ const EditDataPageComponent = () => {
       const response = await fetchRemoveUserImage();
 
       setInfoState(response);
-      setUserData(response.body);
+      response.status && setUserData(response.body);
     } catch (error) {
-      setInfoState({ errorMessage: "An error occurred!" });
+      setInfoState({
+        infoMessage: "An error occurred while removing the image!",
+      });
 
       console.error("SingUpComponent Error: ", error);
     } finally {
+      setShowConfirmationModal(false);
       setLoading(false);
       setModalShow(true);
     }
@@ -128,14 +143,26 @@ const EditDataPageComponent = () => {
             <Form.Label>Upload user image</Form.Label>
             <div className={`p-4  ${styles.klRow__layout}`}>
               <img
-                className={`w-100`}
+                className={`${styles.klRow__image} img-fluid`}
                 src={imagePreview}
                 alt={userData?.username}
               />
-              <BsTrashFill
-                size={32}
-                className={`p-5 ${styles.klRow__icon}`}
-                onClick={handleSubmit(handleRemoveUserImage)}
+              <Button
+                className={`p-5 ${styles.klRow__button}`}
+                variant="null"
+                onClick={openConfirmationModal}
+                disabled={!userData?.username}
+              >
+                <BsTrashFill
+                  size={32}
+                  className={`p-5 ${styles.klRow__icon}`}
+                />
+              </Button>
+
+              <ConfirmModalComponent
+                show={showConfirmationModal}
+                onClose={closeConfirmationModal}
+                onConfirm={handleRemoveUserImage}
               />
             </div>
 
@@ -143,8 +170,9 @@ const EditDataPageComponent = () => {
               type="file"
               placeholder="Choose a new image"
               accept="image/*"
-              {...register("image")}
               isInvalid={!!errors.image}
+              {...register("image")}
+              disabled={!userData?.username}
             />
             <Form.Control.Feedback type="invalid">
               {errors.image?.message}
@@ -155,7 +183,7 @@ const EditDataPageComponent = () => {
             variant="outline-secondary"
             type="submit"
             form="uploadUserImageForm"
-            disabled={isSubmitting || !watchImage}
+            disabled={isSubmitting || !watchImage || !userData?.username}
           >
             Accept
           </Button>
@@ -171,7 +199,18 @@ const EditDataPageComponent = () => {
             <Form.Control
               type="text"
               placeholder="Enter new username"
-              {...register("username")}
+              isInvalid={!!errors.username}
+              disabled={!userData?.username}
+              {...register("username", {
+                minLength: {
+                  value: 5,
+                  message: "Minimum 5 characters required",
+                },
+                pattern: {
+                  value: /^\S+$/,
+                  message: "No spaces allowed",
+                },
+              })}
             />
             <Form.Control.Feedback type="invalid">
               {errors.username?.message}
@@ -181,11 +220,12 @@ const EditDataPageComponent = () => {
           <Form.Group className="mb-3">
             <Form.Label>Change password</Form.Label>
             <Form.Control
+              className="mb-3"
               type="password"
               placeholder="Enter old password"
               isInvalid={!!errors.oldPassword}
               {...register("oldPassword")}
-              className="mb-3"
+              disabled={!userData?.username}
             />
             <Form.Control.Feedback type="invalid">
               {errors.oldPassword?.message}
@@ -196,6 +236,7 @@ const EditDataPageComponent = () => {
               type="password"
               placeholder="Enter new password"
               {...register("newPassword")}
+              disabled={!userData?.username}
             />
             <Form.Control.Feedback type="invalid">
               {errors.newPassword?.message}
@@ -206,6 +247,7 @@ const EditDataPageComponent = () => {
               type="password"
               placeholder="Confirm new password"
               {...register("confirmNewPassword")}
+              disabled={!userData?.username}
             />
             <Form.Control.Feedback type="invalid">
               {errors.confirmNewPassword?.message}
@@ -217,7 +259,7 @@ const EditDataPageComponent = () => {
             variant="outline-secondary"
             type="submit"
             form="updateUserDataForm"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !userData?.username}
           >
             Change user data
           </Button>

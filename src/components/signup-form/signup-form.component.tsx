@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Container, Form, Row } from "react-bootstrap";
 import InfoContext from "../../contexts/info.context";
+import UserContext from "../../contexts/user.context";
 import { fetchSignupUser } from "../../services/fetch-data.service";
 import { ISignupUserCredentials } from "../../interfaces/user.interface";
 
@@ -10,6 +11,7 @@ import styles from "./signup-form.module.scss";
 
 const SignupFormComponent = () => {
   const { setModalShow, setInfoState, setLoading } = useContext(InfoContext);
+  const { userData } = useContext(UserContext);
   const navigate = useNavigate();
 
   const {
@@ -26,9 +28,9 @@ const SignupFormComponent = () => {
 
       setInfoState(response);
 
-      navigate("/login");
+      response.status && navigate("/login");
     } catch (error) {
-      setInfoState({ errorMessage: "An error occurred while signing up." });
+      setInfoState({ infoMessage: "An error occurred while signing up." });
 
       console.error("SingUpComponent Error: ", error);
     } finally {
@@ -52,7 +54,19 @@ const SignupFormComponent = () => {
             <Form.Control
               type="text"
               placeholder="Enter username"
-              {...register("username", { required: "Required" })}
+              isInvalid={!!errors.username}
+              {...register("username", {
+                required: "Required",
+                minLength: {
+                  value: 5,
+                  message: "Minimum 5 characters required",
+                },
+                pattern: {
+                  value: /^\S+$/,
+                  message: "No spaces allowed",
+                },
+              })}
+              disabled={!!userData?.username}
             />
             <Form.Control.Feedback type="invalid">
               {errors.username?.message}
@@ -64,7 +78,9 @@ const SignupFormComponent = () => {
             <Form.Control
               type="text"
               placeholder="Enter email"
+              isInvalid={!!errors.email}
               {...register("email", { required: "Required" })}
+              disabled={!!userData?.username}
             />
             <Form.Control.Feedback type="invalid">
               {errors.email?.message}
@@ -77,7 +93,18 @@ const SignupFormComponent = () => {
               type="password"
               placeholder="Password"
               isInvalid={!!errors.password}
-              {...register("password", { required: "Required" })}
+              {...register("password", {
+                required: "Required",
+                minLength: {
+                  value: 8,
+                  message: "Minimum 8 characters required",
+                },
+                pattern: {
+                  value: /^\S+$/,
+                  message: "No spaces allowed",
+                },
+              })}
+              disabled={!!userData?.username}
             />
             <Form.Control.Feedback type="invalid">
               {errors.password?.message}
@@ -91,6 +118,7 @@ const SignupFormComponent = () => {
               placeholder="Password"
               isInvalid={!!errors.confirmPassword}
               {...register("confirmPassword", { required: "Required" })}
+              disabled={!!userData?.username}
             />
             <Form.Control.Feedback type="invalid">
               {errors.confirmPassword?.message}
@@ -102,7 +130,7 @@ const SignupFormComponent = () => {
             variant="outline-secondary"
             type="submit"
             form="loginForm"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !!userData?.username}
           >
             Sign up
           </Button>
@@ -110,7 +138,10 @@ const SignupFormComponent = () => {
           <Form.Group className="mb-3" controlId="formBasicText">
             <Form.Text className="text-muted">
               Do you have an account?{" "}
-              <Link to="/login" className="p-0">
+              <Link
+                to={`${!userData?.username ? "/login" : "/"}`}
+                className="p-0"
+              >
                 Log in
               </Link>
             </Form.Text>
