@@ -5,6 +5,7 @@
   &__form {
     @include default-max-width;
   }
+
   &__image {
     @include image-container-default;
   }

@@ -180,12 +180,13 @@ const EditDataPageComponent = () => {
           </Form.Group>
 
           <Button
-            variant="outline-secondary"
+            className="mb-3"
+            variant="secondary"
             type="submit"
             form="uploadUserImageForm"
             disabled={isSubmitting || !watchImage || !userData?.username}
           >
-            Accept
+            Confirm
           </Button>
         </Form>
 
@@ -256,12 +257,12 @@ const EditDataPageComponent = () => {
 
           <Button
             className="mb-3"
-            variant="outline-secondary"
+            variant="secondary"
             type="submit"
             form="updateUserDataForm"
             disabled={isSubmitting || !userData?.username}
           >
-            Change user data
+            Confirm
           </Button>
         </Form>
       </Row>

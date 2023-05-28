@@ -91,7 +91,7 @@ const ResetPasswordPageComponent = () => {
 
           <Button
             className="mb-3"
-            variant="outline-secondary"
+            variant="secondary"
             type="submit"
             form="resetPasswordForm"
             disabled={isSubmitting || !!userData?.username}
