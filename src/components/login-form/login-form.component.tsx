@@ -89,7 +89,7 @@ const LogInFormComponent = () => {
 
           <Button
             className="mb-3"
-            variant="outline-secondary"
+            variant="secondary"
             type="submit"
             form="loginForm"
             disabled={isSubmitting || !!userData?.username}

@@ -117,15 +117,17 @@ const ResetPageComponent = () => {
           >
             <ToggleButton
               id="password-toggle"
+              className="w-50"
               value={ISubmitType.Password}
-              variant="outline-secondary"
+              variant="outline-success"
             >
               Reset password
             </ToggleButton>
             <ToggleButton
               id="token-toggle"
+              className="w-50"
               value={ISubmitType.Token}
-              variant="outline-secondary"
+              variant="outline-success"
             >
               Reset token
             </ToggleButton>
@@ -134,12 +136,12 @@ const ResetPageComponent = () => {
           <div className="text-center">
             <Button
               className="mb-3 "
-              variant="outline-secondary"
+              variant="secondary"
               type="submit"
               form="resetForm"
               disabled={isSubmitting || !!userData?.username}
             >
-              Send
+              Confirm
             </Button>
           </div>
         </Form>
